@@ -42,7 +42,7 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
     private String firstName;
     private String lastName;
     private String email;
-    private byte[] profileImage;
+    private String profileImage;
 
     private DataSource dataSource;
 
@@ -108,11 +108,6 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
                 profileImage = stream.toByteArray();
 */
 
-                if (profileImage == null || profileImage.length > 0) {
-                    profileImage = getBitmapFromAsset("profile_image.png");
-                }
-
-
                 firstName = inputFirstName.getText().toString();
                 users.setUserFirstName(firstName);
 
@@ -148,8 +143,7 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        profileImage = stream.toByteArray();
-                        users.setUserPhoto(profileImage);
+                        users.setUserPhoto(imageUri.toString());
                         inputImage.setImageBitmap(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

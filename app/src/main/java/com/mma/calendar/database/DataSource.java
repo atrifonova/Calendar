@@ -46,7 +46,7 @@ public class DataSource {
         database.close();
     }
 
-    public User createUser(String userName, String password, byte[] userPhoto, String firstName, String lastName, String email) {
+    public User createUser(String userName, String password, String userPhoto, String firstName, String lastName, String email) {
 
         ContentValues values = new ContentValues();
         values.put(UserConstants.USER_NAME, userName);
@@ -161,7 +161,7 @@ public class DataSource {
         users.setUserID(cursor.getLong(0));
         users.setUserName(cursor.getString(1));
         users.setUserPassword(cursor.getString(2));
-        users.setUserPhoto(cursor.getBlob(3));
+        users.setUserPhoto(cursor.getString(3));
         users.setUserFirstName(cursor.getString(4));
         users.setUserLastName(cursor.getString(5));
         users.setUserEmail(cursor.getString(6));

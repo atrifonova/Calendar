@@ -12,16 +12,16 @@ public class User {
     private long userID;
     private String userName;
     private String userPassword;
-    private byte[] userPhoto;
+    private String userPhoto;
     private String userFirstName;
     private String userLastName;
     private String userEmail;
 
     public User() {
-        this(0, "", "", null, "", "", "test@test.com");
+        this(0, "", "", "", "", "", "test@test.com");
     }
 
-    public User(long newUserID, String newUserName, String newUserPassword, byte[] newUserPhoto, String newUserFirstName,
+    public User(long newUserID, String newUserName, String newUserPassword, String newUserPhoto, String newUserFirstName,
                 String newUserLastName, String newUserEmail) {
 
         setUserID(newUserID);
@@ -65,13 +65,15 @@ public class User {
         }
     }
 
-    public byte[] getUserPhoto() {
+    public String getUserPhoto() {
         return userPhoto;
     }
 
-    public void setUserPhoto(byte[] userPhoto) {
+    public void setUserPhoto(String userPhoto) {
         if (userPhoto != null) {
             this.userPhoto = userPhoto;
+        } else {
+            this.userPhoto = "profile_image.png";
         }
     }
 

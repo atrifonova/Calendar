@@ -14,11 +14,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mma.calendar.R;
+import com.mma.calendar.database.DataSource;
+import com.mma.calendar.model.User;
+
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class CalendarActivity extends ActionBarActivity {
 
     final private static int DIALOG_LOGIN = 1;
+
+    private DataSource dataSource;
+
+    private EditText inputUserName;
+    private EditText inputPassword;
+    private Button loginButton;
+    private Button cancelButton;
+
+    private String userName;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +56,13 @@ public class CalendarActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        dataSource = new DataSource(CalendarActivity.this);
+        try {
+            dataSource.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -90,18 +112,30 @@ public class CalendarActivity extends ActionBarActivity {
         switch (id) {
             case DIALOG_LOGIN:
                 final AlertDialog alertDialog = (AlertDialog) dialog;
-                Button loginButton = (Button) alertDialog.findViewById(R.id.btn_log_in);
-                Button cancelButton = (Button)alertDialog.findViewById(R.id.btn_cancel);
-                final EditText userName = (EditText)alertDialog.findViewById(R.id.txt_user_name_login);
-                final EditText userPassword = (EditText)alertDialog.findViewById(R.id.txt_user_password_login);
+                loginButton = (Button) alertDialog.findViewById(R.id.btn_log_in);
+                cancelButton = (Button)alertDialog.findViewById(R.id.btn_cancel);
+                inputUserName = (EditText)alertDialog.findViewById(R.id.txt_user_name_login);
+                inputPassword = (EditText)alertDialog.findViewById(R.id.txt_user_password_login);
 
                 loginButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         alertDialog.dismiss();
-                        Toast.makeText(CalendarActivity.this, "User Name: " + userName.getText().toString()
-                                        + "Password: " + userPassword.getText().toString(),
-                                Toast.LENGTH_LONG).show();
+
+                        userName = inputUserName.getText().toString();
+                        password = inputPassword.getText().toString();
+
+                        List<User> values = dataSource.getAllUsers();
+
+                        if (values == null) {
+                            Toast.makeText(CalendarActivity.this, "No records", Toast.LENGTH_LONG).show();
+                        } else {
+                            for (int i = 0; i < values.size(); i++) {
+                                if (values.get(i).getUserName().equals(userName) && values.get(i).getUserPassword().equals(password)) {
+                                    Toast.makeText(CalendarActivity.this, "Successfully", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
                     }
                 });
 

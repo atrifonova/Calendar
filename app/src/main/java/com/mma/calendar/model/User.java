@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
  * Created by Toni on 04-Feb-15.
  */
 public class User {
+    private static final Pattern VALID_EMAIL_ADDRESS = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+            Pattern.CASE_INSENSITIVE);
     private long userID;
     private String userName;
     private String userPassword;
@@ -15,14 +17,12 @@ public class User {
     private String userLastName;
     private String userEmail;
 
-    private static final Pattern VALID_EMAIL_ADDRESS = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-
     public User() {
         this(0, "", "", null, "", "", "test@test.com");
     }
 
-    public User(long newUserID, String newUserName, String newUserPassword, byte[] newUserPhoto, String newUserFirstName, String newUserLastName, String newUserEmail) {
+    public User(long newUserID, String newUserName, String newUserPassword, byte[] newUserPhoto, String newUserFirstName,
+                String newUserLastName, String newUserEmail) {
 
         setUserID(newUserID);
         setUserName(newUserName);
@@ -33,8 +33,16 @@ public class User {
         setUserEmail(newUserEmail);
     }
 
+    public long getUserID() {
+        return userID;
+    }
+
     public void setUserID(long userID) {
         this.userID = userID;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void setUserName(String newUserName) {
@@ -45,6 +53,10 @@ public class User {
         }
     }
 
+    public String getUserPassword() {
+        return userPassword;
+    }
+
     public void setUserPassword(String newUserPassword) {
         if (newUserPassword != null) {
             userPassword = newUserPassword;
@@ -53,8 +65,18 @@ public class User {
         }
     }
 
+    public byte[] getUserPhoto() {
+        return userPhoto;
+    }
+
     public void setUserPhoto(byte[] userPhoto) {
-        this.userPhoto = userPhoto;
+        if (userPhoto != null) {
+            this.userPhoto = userPhoto;
+        }
+    }
+
+    public String getUserFirstName() {
+        return userFirstName;
     }
 
     public void setUserFirstName(String newUserFirstName) {
@@ -65,12 +87,20 @@ public class User {
         }
     }
 
+    public String getUserLastName() {
+        return userLastName;
+    }
+
     public void setUserLastName(String newUserLastName) {
         if (newUserLastName != null) {
             userLastName = newUserLastName;
         } else {
             userLastName = "";
         }
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
 
     public void setUserEmail(String newUserEmail) {
@@ -80,33 +110,5 @@ public class User {
         } else {
             userEmail = "";
         }
-    }
-
-    public long getUserID() {
-        return userID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public byte[] getUserPhoto() {
-        return userPhoto;
-    }
-
-    public String getUserFirstName() {
-        return userFirstName;
-    }
-
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
     }
 }

@@ -1,6 +1,7 @@
 package com.mma.calendar.activities;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,7 +20,9 @@ import com.mma.calendar.model.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.sql.SQLException;
 
 public class RegistrationActivity extends ActionBarActivity implements View.OnClickListener{
@@ -42,6 +45,7 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
     private byte[] profileImage;
 
     private DataSource dataSource;
+
 
     private User users = new User();
 
@@ -98,11 +102,13 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
                 password = inputPassword.getText().toString();
                 users.setUserPassword(password);
 
-                /*Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_image);
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_image);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 profileImage = stream.toByteArray();
-                users.setUserPhoto(profileImage);*/
+
+
+                users.setUserPhoto(getBitmapFromAsset("profile_image.png"));
 
                 firstName = inputFirstName.getText().toString();
                 users.setUserFirstName(firstName);
@@ -147,5 +153,23 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
                     }
                 }
         }
+    }
+
+
+    private byte[] getBitmapFromAsset(String strName) {
+        AssetManager assetManager = getApplicationContext().getAssets();
+        InputStream istr = null;
+        try {
+            istr = assetManager.open("img/" + strName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+
+        int iBytes = bitmap.getWidth() * bitmap.getHeight() * 4;
+        ByteBuffer buffer = ByteBuffer.allocate(iBytes);
+
+        bitmap.copyPixelsToBuffer(buffer);
+        return buffer.array();
     }
 }

@@ -92,7 +92,7 @@ public class CalendarActivity extends ActionBarActivity {
     protected Dialog onCreateDialog(int id) {
         AlertDialog dialogDetails = null;
 
-        switch (id){
+        switch (id) {
             case DIALOG_LOGIN:
                 LayoutInflater inflater = LayoutInflater.from(this);
                 View dialogView = inflater.inflate(R.layout.dialog_login_layout, null);
@@ -113,9 +113,9 @@ public class CalendarActivity extends ActionBarActivity {
             case DIALOG_LOGIN:
                 final AlertDialog alertDialog = (AlertDialog) dialog;
                 loginButton = (Button) alertDialog.findViewById(R.id.btn_log_in);
-                cancelButton = (Button)alertDialog.findViewById(R.id.btn_cancel);
-                inputUserName = (EditText)alertDialog.findViewById(R.id.txt_user_name_login);
-                inputPassword = (EditText)alertDialog.findViewById(R.id.txt_user_password_login);
+                cancelButton = (Button) alertDialog.findViewById(R.id.btn_cancel);
+                inputUserName = (EditText) alertDialog.findViewById(R.id.txt_user_name_login);
+                inputPassword = (EditText) alertDialog.findViewById(R.id.txt_user_password_login);
 
                 loginButton.setOnClickListener(new View.OnClickListener() {
                     @Override

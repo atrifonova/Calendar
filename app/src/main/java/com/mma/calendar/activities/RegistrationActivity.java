@@ -160,7 +160,7 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
         AssetManager assetManager = getApplicationContext().getAssets();
         InputStream istr = null;
         try {
-            istr = assetManager.open("img/" + strName);
+            istr = assetManager.open(strName);
         } catch (IOException e) {
             e.printStackTrace();
         }

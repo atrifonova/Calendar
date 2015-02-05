@@ -18,20 +18,16 @@ public class UserEvent {
         setFkEventID(newFkEventID);
     }
 
-    public void setUserEventID(long userEventID) {
-        this.userEventID = userEventID;
-    }
-
     public void setFkUserID(long fkUserID) {
         this.fkUserID = fkUserID;
     }
 
-    public void setFkEventID(long fkEventID) {
-        this.fkEventID = fkEventID;
-    }
-
     public long getUserEventID() {
         return userEventID;
+    }
+
+    public void setUserEventID(long userEventID) {
+        this.userEventID = userEventID;
     }
 
     public long getFkUSerID() {
@@ -40,5 +36,9 @@ public class UserEvent {
 
     public long getFkEventID() {
         return fkEventID;
+    }
+
+    public void setFkEventID(long fkEventID) {
+        this.fkEventID = fkEventID;
     }
 }

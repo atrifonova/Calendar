@@ -32,8 +32,16 @@ public class Event {
         setEventEndTime(newEventEndTime);
     }
 
+    public long getEventID() {
+        return eventID;
+    }
+
     public void setEventID(long eventID) {
         this.eventID = eventID;
+    }
+
+    public String getEventTitle() {
+        return eventTitle;
     }
 
     public void setEventTitle(String newEventTitle) {
@@ -44,12 +52,20 @@ public class Event {
         }
     }
 
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
     public void setEventDescription(String newEventDescription) {
         if (newEventDescription != null) {
             eventDescription = newEventDescription;
         } else {
             eventDescription = "";
         }
+    }
+
+    public String getEventLocation() {
+        return eventLocation;
     }
 
     public void setEventLocation(String newEventLocation) {
@@ -60,12 +76,20 @@ public class Event {
         }
     }
 
+    public String getEventPhoto() {
+        return eventPhoto;
+    }
+
     public void setEventPhoto(String newEventPhoto) {
         if (newEventPhoto != null) {
             eventPhoto = newEventPhoto;
         } else {
             eventPhoto = "";
         }
+    }
+
+    public String getEventColor() {
+        return eventColor;
     }
 
     public void setEventColor(String newEventColor) {
@@ -76,12 +100,20 @@ public class Event {
         }
     }
 
+    public String getEventStartDate() {
+        return eventStartDate;
+    }
+
     public void setEventStartDate(String newEventStartDate) {
         if (newEventStartDate != null) {
             eventStartDate = newEventStartDate;
         } else {
             eventStartDate = "";
         }
+    }
+
+    public String getEventEndDate() {
+        return eventEndDate;
     }
 
     public void setEventEndDate(String newEventEndDate) {
@@ -92,6 +124,10 @@ public class Event {
         }
     }
 
+    public String getEventStartTime() {
+        return eventStartTime;
+    }
+
     public void setEventStartTime(String newEventStartTime) {
         if (newEventStartTime != null) {
             eventStartTime = newEventStartTime;
@@ -100,51 +136,15 @@ public class Event {
         }
     }
 
+    public String getEventEndTime() {
+        return eventEndTime;
+    }
+
     public void setEventEndTime(String newEventEndTime) {
         if (newEventEndTime != null) {
             eventEndTime = newEventEndTime;
         } else {
             eventEndTime = "";
         }
-    }
-
-    public long getEventID() {
-        return eventID;
-    }
-
-    public String getEventTitle() {
-        return eventTitle;
-    }
-
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
-    public String getEventLocation() {
-        return eventLocation;
-    }
-
-    public String getEventPhoto() {
-        return eventPhoto;
-    }
-
-    public String getEventColor() {
-        return eventColor;
-    }
-
-    public String getEventStartDate() {
-        return eventStartDate;
-    }
-
-    public String getEventEndDate() {
-        return eventEndDate;
-    }
-
-    public String getEventStartTime() {
-        return eventStartTime;
-    }
-
-    public String getEventEndTime() {
-        return eventEndTime;
     }
 }

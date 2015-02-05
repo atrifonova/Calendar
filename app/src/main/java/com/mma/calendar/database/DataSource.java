@@ -28,9 +28,9 @@ public class DataSource {
     private long userID = 0;
     private long eventID = 0;
 
-    private String allColumnsUserTable [] = {UserConstants.PK_USER_ID, UserConstants.USER_NAME, UserConstants.PASSWORD,
+    private String allColumnsUserTable[] = {UserConstants.PK_USER_ID, UserConstants.USER_NAME, UserConstants.PASSWORD,
             UserConstants.USER_PHOTO, UserConstants.FIRST_NAME, UserConstants.LAST_NAME, UserConstants.EMAIL};
-    private String allColumnsEventTable [] = {EventConstants.PK_EVENT_ID, EventConstants.EVENT_TITLE, EventConstants.EVENT_DESCRIPTION, EventConstants.EVENT_LOCATION,
+    private String allColumnsEventTable[] = {EventConstants.PK_EVENT_ID, EventConstants.EVENT_TITLE, EventConstants.EVENT_DESCRIPTION, EventConstants.EVENT_LOCATION,
             EventConstants.EVENT_PHOTO, EventConstants.EVENT_COLOR, EventConstants.EVENT_START_DATE, EventConstants.EVENT_END_DATE, EventConstants.EVENT_START_TIME, EventConstants.EVENT_END_TIME};
     private String allColumnsUserEventTable[] = {UserEventConstants.PK_USER_EVENTS_ID, UserEventConstants.FK_USER_ID, UserEventConstants.FK_EVENT_ID};
 
@@ -38,15 +38,15 @@ public class DataSource {
         dbHelper = new DBHelper(context);
     }
 
-    public void open () throws SQLException {
+    public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }
 
-    public void close () {
+    public void close() {
         database.close();
     }
 
-    public User createUser (String userName, String password, byte[] userPhoto, String firstName, String lastName, String email) {
+    public User createUser(String userName, String password, byte[] userPhoto, String firstName, String lastName, String email) {
 
         ContentValues values = new ContentValues();
         values.put(UserConstants.USER_NAME, userName);
@@ -66,7 +66,7 @@ public class DataSource {
         return users;
     }
 
-    public Event createEvent (String title, String description, String location, String photo, String color, String startDate, String endDate, String startTime, String endTime) {
+    public Event createEvent(String title, String description, String location, String photo, String color, String startDate, String endDate, String startTime, String endTime) {
 
         ContentValues values = new ContentValues();
         values.put(EventConstants.EVENT_TITLE, title);
@@ -89,7 +89,7 @@ public class DataSource {
         return events;
     }
 
-    public UserEvent createUserEvent (long newUserID, long newEventID) {
+    public UserEvent createUserEvent(long newUserID, long newEventID) {
 
         newUserID = userID;
         newEventID = eventID;
@@ -102,7 +102,7 @@ public class DataSource {
 
         Cursor cursor = database.query(DBConstants.USER_EVENT_TABLE, allColumnsUserEventTable, UserEventConstants.PK_USER_EVENTS_ID + " = " + insertID, null, null, null, null);
         cursor.moveToFirst();
-        UserEvent userEvents = cursorToUserEvent (cursor);
+        UserEvent userEvents = cursorToUserEvent(cursor);
         cursor.close();
 
         return userEvents;
@@ -156,7 +156,7 @@ public class DataSource {
         return userEvents;
     }
 
-    private User cursorToUser (Cursor cursor) {
+    private User cursorToUser(Cursor cursor) {
         User users = new User();
         users.setUserID(cursor.getLong(0));
         users.setUserName(cursor.getString(1));
@@ -168,7 +168,7 @@ public class DataSource {
         return users;
     }
 
-    private Event cursorToEvent (Cursor cursor) {
+    private Event cursorToEvent(Cursor cursor) {
         Event events = new Event();
         events.setEventID(cursor.getLong(0));
         events.setEventTitle(cursor.getString(1));
@@ -183,7 +183,7 @@ public class DataSource {
         return events;
     }
 
-    private UserEvent cursorToUserEvent (Cursor cursor) {
+    private UserEvent cursorToUserEvent(Cursor cursor) {
         UserEvent userEvents = new UserEvent();
         userEvents.setUserEventID(cursor.getLong(0));
         userEvents.setFkUserID(cursor.getLong(1));

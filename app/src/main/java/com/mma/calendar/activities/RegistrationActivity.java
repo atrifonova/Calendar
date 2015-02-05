@@ -101,14 +101,17 @@ public class RegistrationActivity extends ActionBarActivity implements View.OnCl
 
                 password = inputPassword.getText().toString();
                 users.setUserPassword(password);
-
+/*
                 Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_image);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 profileImage = stream.toByteArray();
+*/
 
+                if (profileImage == null || profileImage.length > 0) {
+                    profileImage = getBitmapFromAsset("profile_image.png");
+                }
 
-                users.setUserPhoto(getBitmapFromAsset("profile_image.png"));
 
                 firstName = inputFirstName.getText().toString();
                 users.setUserFirstName(firstName);

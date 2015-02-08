@@ -4,21 +4,32 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mma.calendar.R;
+import com.mma.calendar.adapters.CalendarMonthAdapter;
 import com.mma.calendar.database.DataSource;
 import com.mma.calendar.model.User;
+import com.mma.calendar.util.Utility;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 
 public class CalendarActivity extends ActionBarActivity {
@@ -35,30 +46,31 @@ public class CalendarActivity extends ActionBarActivity {
     private String userName;
     private String password;
 
+
+    private GregorianCalendar month, itemmonth;// calendar instances.
+
+    private CalendarMonthAdapter adapter;// adapter instance
+    private Handler handler;// for grabbing some event values for showing the dot
+    // marker.
+    private ArrayList<String> items; // container to store calendar items which
+    // needs showing the event marker
+    private ArrayList<String> event;
+    private LinearLayout rLayout;
+    private ArrayList<String> date;
+    private ArrayList<String> desc;
+
+    private Runnable calendarUpdater;
+
+    public CalendarActivity() {
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_month_view);
-/*
-        setContentView(R.layout.activity_calendar);
 
-        Button launchButton = (Button) findViewById(R.id.btn_login_1);
-        launchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(DIALOG_LOGIN);
-            }
-        });
 
-        Button btnRegistration = (Button) findViewById(R.id.btn_registration_1);
-        btnRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CalendarActivity.this, RegistrationActivity.class);
-                startActivity(intent);
-            }
-        });
-  */
         dataSource = new DataSource(CalendarActivity.this);
         try {
             dataSource.open();
@@ -66,8 +78,54 @@ public class CalendarActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+        init();
+
     }
 
+
+    private void init() {
+        rLayout = (LinearLayout) findViewById(R.id.text);
+        month = (GregorianCalendar) GregorianCalendar.getInstance();
+        itemmonth = (GregorianCalendar) month.clone();
+
+        items = new ArrayList<String>();
+
+        adapter = new CalendarMonthAdapter(this, month);
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(adapter);
+
+        handler = new Handler();
+        initCalendarUpdater();
+        handler.post(calendarUpdater);
+
+    }
+
+    private void initCalendarUpdater() {
+        calendarUpdater = new Runnable() {
+
+            @Override
+            public void run() {
+                Log.e("","calendarUpdater");
+                items.clear();
+
+                // Print dates of the current week
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                String itemvalue;
+                event = Utility.readCalendarEvent(getApplicationContext());
+                Log.d("=====Event====", event.toString());
+                Log.d("=====Date ARRAY====", Utility.startDates.toString());
+
+                for (int i = 0; i < Utility.startDates.size(); i++) {
+                    itemvalue = df.format(itemmonth.getTime());
+                    itemmonth.add(GregorianCalendar.DATE, 1);
+                    items.add(Utility.startDates.get(i).toString());
+                }
+                adapter.setItems(items);
+                adapter.notifyDataSetChanged();
+            }
+        };
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

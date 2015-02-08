@@ -38,6 +38,8 @@ public class CalendarActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.calendar_month_view);
+/*
         setContentView(R.layout.activity_calendar);
 
         Button launchButton = (Button) findViewById(R.id.btn_login_1);
@@ -56,13 +58,14 @@ public class CalendarActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-
+  */
         dataSource = new DataSource(CalendarActivity.this);
         try {
             dataSource.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -84,7 +87,13 @@ public class CalendarActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if (id == R.id.action_login) {
+            showDialog(DIALOG_LOGIN);
+        }
+        if (id == R.id.action_register) {
+            Intent intent = new Intent(CalendarActivity.this, RegistrationActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

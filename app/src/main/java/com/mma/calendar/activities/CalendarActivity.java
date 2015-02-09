@@ -3,6 +3,7 @@ package com.mma.calendar.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -125,6 +127,65 @@ public class CalendarActivity extends ActionBarActivity {
                 refreshCalendar();
 
             }
+        });
+
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                // removing the previous view if added
+                if (((LinearLayout) rLayout).getChildCount() > 0) {
+                    ((LinearLayout) rLayout).removeAllViews();
+                }
+                desc = new ArrayList<String>();
+                date = new ArrayList<String>();
+                ((CalendarMonthAdapter) parent.getAdapter()).setSelected(v);
+                String selectedGridDate = CalendarMonthAdapter.dayString.get(position);
+                String[] separatedTime = selectedGridDate.split("-");
+                String gridvalueString = separatedTime[2].replaceFirst("^0*", "");// taking
+                // last
+                // part
+                // of
+                // date.
+                // ie;
+                // 2
+                // from
+                // 2012-12-02.
+                int gridvalue = Integer.parseInt(gridvalueString);
+                // navigate to next or previous month on clicking offdays.
+                if ((gridvalue > 10) && (position < 8)) {
+                    setPreviousMonth();
+                    refreshCalendar();
+                } else if ((gridvalue < 7) && (position > 28)) {
+                    setNextMonth();
+                    refreshCalendar();
+                }
+                ((CalendarMonthAdapter) parent.getAdapter()).setSelected(v);
+
+                for (int i = 0; i < Utility.startDates.size(); i++) {
+                    if (Utility.startDates.get(i).equals(selectedGridDate)) {
+                        desc.add(Utility.nameOfEvent.get(i));
+                    }
+                }
+
+                if (desc.size() > 0) {
+                    for (int i = 0; i < desc.size(); i++) {
+                        TextView rowTextView = new TextView(CalendarActivity.this);
+
+                        // set some properties of rowTextView or something
+                        rowTextView.setText("Event:" + desc.get(i));
+                        rowTextView.setTextColor(Color.BLACK);
+
+                        // add the textview to the linearlayout
+                        rLayout.addView(rowTextView);
+
+                    }
+
+                }
+
+                desc = null;
+
+            }
+
         });
 
 

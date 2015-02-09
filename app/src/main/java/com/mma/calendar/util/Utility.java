@@ -26,8 +26,9 @@ public class Utility {
 
         nameOfEvent.add("test");
         long date = System.currentTimeMillis();
-        startDates.add("test");
-        endDates.add("test");
+
+        startDates.add(getDate(Long.parseLong(""+date)));
+        endDates.add(getDate(Long.parseLong(""+date)));
         descriptions.add("test");
 
 

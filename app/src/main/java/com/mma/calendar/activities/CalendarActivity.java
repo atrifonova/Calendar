@@ -51,7 +51,7 @@ public class CalendarActivity extends ActionBarActivity {
     private String password;
 
 
-    private GregorianCalendar month, itemmonth;// calendar instances.
+    private GregorianCalendar month, itemMonth;// calendar instances.
 
     private CalendarMonthAdapter adapter;// adapter instance
     private Handler handler;// for grabbing some event values for showing the dot
@@ -90,7 +90,7 @@ public class CalendarActivity extends ActionBarActivity {
     private void init() {
         rLayout = (LinearLayout) findViewById(R.id.text);
         month = (GregorianCalendar) GregorianCalendar.getInstance();
-        itemmonth = (GregorianCalendar) month.clone();
+        itemMonth = (GregorianCalendar) month.clone();
 
         items = new ArrayList<String>();
 
@@ -141,14 +141,14 @@ public class CalendarActivity extends ActionBarActivity {
                 ((CalendarMonthAdapter) parent.getAdapter()).setSelected(v);
                 String selectedGridDate = CalendarMonthAdapter.dayString.get(position);
                 String[] separatedTime = selectedGridDate.split("-");
-                String gridvalueString = separatedTime[2].replaceFirst("^0*", "");// taking
+                String gridValueString = separatedTime[2].replaceFirst("^0*", "");// taking
 
-                int gridvalue = Integer.parseInt(gridvalueString);
+                int gridValue = Integer.parseInt(gridValueString);
                 // navigate to next or previous month on clicking offdays.
-                if ((gridvalue > 10) && (position < 8)) {
+                if ((gridValue > 10) && (position < 8)) {
                     setPreviousMonth();
                     refreshCalendar();
-                } else if ((gridvalue < 7) && (position > 28)) {
+                } else if ((gridValue < 7) && (position > 28)) {
                     setNextMonth();
                     refreshCalendar();
                 }
@@ -194,14 +194,14 @@ public class CalendarActivity extends ActionBarActivity {
 
                 // Print dates of the current week
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                String itemvalue;
+                String itemValue;
                 event = Utility.readCalendarEvent(getApplicationContext());
                 Log.d("=====Event====", event.toString());
                 Log.d("=====Date ARRAY====", Utility.startDates.toString());
 
                 for (int i = 0; i < Utility.startDates.size(); i++) {
-                    itemvalue = df.format(itemmonth.getTime());
-                    itemmonth.add(GregorianCalendar.DATE, 1);
+                    itemValue = df.format(itemMonth.getTime());
+                    itemMonth.add(GregorianCalendar.DATE, 1);
                     items.add(Utility.startDates.get(i).toString());
                 }
                 adapter.setItems(items);

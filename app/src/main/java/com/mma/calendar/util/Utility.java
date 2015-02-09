@@ -23,12 +23,13 @@ public class Utility {
         endDates.clear();
         descriptions.clear();
 
+        //read from database
 
         nameOfEvent.add("test");
         long date = System.currentTimeMillis();
 
-        startDates.add(getDate(Long.parseLong(""+date)));
-        endDates.add(getDate(Long.parseLong(""+date)));
+        startDates.add(getDate(Long.parseLong("" + date)));
+        endDates.add(getDate(Long.parseLong("" + date)));
         descriptions.add("test");
 
 

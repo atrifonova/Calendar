@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mma.calendar.R;
@@ -99,6 +101,33 @@ public class CalendarActivity extends ActionBarActivity {
         initCalendarUpdater();
         handler.post(calendarUpdater);
 
+
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
+
+        RelativeLayout previous = (RelativeLayout) findViewById(R.id.previous);
+
+        previous.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                setPreviousMonth();
+                refreshCalendar();
+            }
+        });
+
+        RelativeLayout next = (RelativeLayout) findViewById(R.id.next);
+        next.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                setNextMonth();
+                refreshCalendar();
+
+            }
+        });
+
+
     }
 
     private void initCalendarUpdater() {
@@ -106,7 +135,7 @@ public class CalendarActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                Log.e("","calendarUpdater");
+                Log.e("", "calendarUpdater");
                 items.clear();
 
                 // Print dates of the current week
@@ -215,5 +244,34 @@ public class CalendarActivity extends ActionBarActivity {
 
                 break;
         }
+    }
+
+
+    protected void setNextMonth() {
+        if (month.get(GregorianCalendar.MONTH) == month.getActualMaximum(GregorianCalendar.MONTH)) {
+            month.set((month.get(GregorianCalendar.YEAR) + 1), month.getActualMinimum(GregorianCalendar.MONTH), 1);
+        } else {
+            month.set(GregorianCalendar.MONTH, month.get(GregorianCalendar.MONTH) + 1);
+        }
+
+    }
+
+    protected void setPreviousMonth() {
+        if (month.get(GregorianCalendar.MONTH) == month.getActualMinimum(GregorianCalendar.MONTH)) {
+            month.set((month.get(GregorianCalendar.YEAR) - 1), month.getActualMaximum(GregorianCalendar.MONTH), 1);
+        } else {
+            month.set(GregorianCalendar.MONTH, month.get(GregorianCalendar.MONTH) - 1);
+        }
+
+    }
+
+    public void refreshCalendar() {
+        TextView title = (TextView) findViewById(R.id.title);
+
+        adapter.refreshDays();
+        adapter.notifyDataSetChanged();
+        handler.post(calendarUpdater); // generate some calendar items
+
+        title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
     }
 }

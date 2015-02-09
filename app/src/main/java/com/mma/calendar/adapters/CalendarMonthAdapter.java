@@ -24,19 +24,20 @@ import java.util.Locale;
 public class CalendarMonthAdapter extends BaseAdapter {
     public static List<String> dayString;
     public GregorianCalendar pmonth; // calendar instance for previous month
+    DateFormat df;
     /**
      * calendar instance for previous month for getting complete view
      */
-    public GregorianCalendar pmonthmaxset;
-    int firstDay;
-    int maxWeeknumber;
-    int maxP;
-    int calMaxP;
-    int lastWeekDay;
-    int leftDays;
-    int mnthlength;
-    String itemvalue, curentDateString;
-    DateFormat df;
+    private GregorianCalendar pmonthmaxset;
+    private int firstDay;
+    private int maxWeeknumber;
+    private int maxP;
+    private int calMaxP;
+    private int lastWeekDay;
+    private int leftDays;
+    private int mnthlength;
+    private String itemvalue;
+    private String curentDateString;
     private Context mContext;
     private java.util.Calendar month;
     private GregorianCalendar selectedDate;

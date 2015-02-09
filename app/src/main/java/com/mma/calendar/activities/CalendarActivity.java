@@ -142,14 +142,7 @@ public class CalendarActivity extends ActionBarActivity {
                 String selectedGridDate = CalendarMonthAdapter.dayString.get(position);
                 String[] separatedTime = selectedGridDate.split("-");
                 String gridvalueString = separatedTime[2].replaceFirst("^0*", "");// taking
-                // last
-                // part
-                // of
-                // date.
-                // ie;
-                // 2
-                // from
-                // 2012-12-02.
+
                 int gridvalue = Integer.parseInt(gridvalueString);
                 // navigate to next or previous month on clicking offdays.
                 if ((gridvalue > 10) && (position < 8)) {

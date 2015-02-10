@@ -1,9 +1,12 @@
 package com.mma.calendar.activities;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -65,20 +68,35 @@ public class CalendarActivity extends ActionBarActivity {
     private ArrayList<String> date;
     private ArrayList<String> desc;
 
+    private ActionBar actionBar;
+
     private Runnable calendarUpdater;
 
     public CalendarActivity() {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
- //       setContentView(R.layout.calendar_month_view);
+        //       setContentView(R.layout.calendar_month_view);
         setContentView(R.layout.test);
-CalendarView v = (CalendarView) findViewById(R.id.calendar);
+        CalendarView v = (CalendarView) findViewById(R.id.calendar);
         v.setFirstDayOfWeek(Calendar.MONDAY);
-//        v.setSelectedDateVerticalBar();
+        v.setDate(System.currentTimeMillis());
+        v.setWeekSeparatorLineColor(Color.BLACK);
+        v.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                Toast.makeText(getApplicationContext(), " " + year + " " + month + " " + dayOfMonth, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        v.animate();
+
+//        initActionBar();
 
         dataSource = new DataSource(CalendarActivity.this);
         try {
@@ -91,6 +109,8 @@ CalendarView v = (CalendarView) findViewById(R.id.calendar);
 
     }
 
+    private void initActionBar() {
+    }
 
     private void init() {
         rLayout = (LinearLayout) findViewById(R.id.text);

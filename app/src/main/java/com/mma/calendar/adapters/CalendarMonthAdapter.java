@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mma.calendar.R;
@@ -14,6 +13,7 @@ import com.mma.calendar.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -46,8 +46,9 @@ public class CalendarMonthAdapter extends BaseAdapter {
 
     public CalendarMonthAdapter(Context c, GregorianCalendar monthCalendar) {
         CalendarMonthAdapter.dayString = new ArrayList<String>();
-        Locale.setDefault(Locale.US);
+//        Locale.setDefault(Locale.US);
         month = monthCalendar;
+        monthCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         selectedDate = (GregorianCalendar) monthCalendar.clone();
         mContext = c;
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
@@ -128,12 +129,15 @@ public class CalendarMonthAdapter extends BaseAdapter {
         }
 
         // show icon if date is not empty and it exists in the items array
-        ImageView iw = (ImageView) v.findViewById(R.id.date_icon);
-        if (date.length() > 0 && items != null && items.contains(date)) {
+
+        /*
+         I mageView iw = (ImageView) v.findViewById(R.id.date_icon);
+         if (date.length() > 0 && items != null && items.contains(date)) {
             iw.setVisibility(View.VISIBLE);
         } else {
             iw.setVisibility(View.INVISIBLE);
         }
+ */
         return v;
     }
 
@@ -150,8 +154,10 @@ public class CalendarMonthAdapter extends BaseAdapter {
         // clear items
         items.clear();
         dayString.clear();
-        Locale.setDefault(Locale.US);
+
         pmonth = (GregorianCalendar) month.clone();
+        pmonth.setFirstDayOfWeek(Calendar.MONDAY);
+
         // month start day. ie; sun, mon, etc
         firstDay = month.get(GregorianCalendar.DAY_OF_WEEK);
         // finding number of weeks in current month.
@@ -168,6 +174,7 @@ public class CalendarMonthAdapter extends BaseAdapter {
         /**
          * setting the start date as previous month's required date.
          */
+        pmonthmaxset.setFirstDayOfWeek(Calendar.MONDAY);
         pmonthmaxset.set(GregorianCalendar.DAY_OF_MONTH, calMaxP + 1);
 
         /**

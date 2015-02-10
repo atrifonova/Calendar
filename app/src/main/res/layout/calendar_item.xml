@@ -16,12 +16,14 @@
         android:textStyle="bold" >
     </TextView>
 
+    <!--
     <ImageView
         android:id="@+id/date_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignLeft="@+id/date"
-
+        android:background="@color/background_floating_material_light"
         android:visibility="gone" />
+    -->
 
 </LinearLayout>

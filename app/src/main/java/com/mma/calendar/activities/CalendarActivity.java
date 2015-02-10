@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -72,8 +74,11 @@ public class CalendarActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar_month_view);
-
+ //       setContentView(R.layout.calendar_month_view);
+        setContentView(R.layout.test);
+CalendarView v = (CalendarView) findViewById(R.id.calendar);
+        v.setFirstDayOfWeek(Calendar.MONDAY);
+//        v.setSelectedDateVerticalBar();
 
         dataSource = new DataSource(CalendarActivity.this);
         try {
@@ -82,7 +87,7 @@ public class CalendarActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        init();
+//        init();
 
     }
 
@@ -311,6 +316,7 @@ public class CalendarActivity extends ActionBarActivity {
     }
 
     protected void setPreviousMonth() {
+
         if (month.get(GregorianCalendar.MONTH) == month.getActualMinimum(GregorianCalendar.MONTH)) {
             month.set((month.get(GregorianCalendar.YEAR) - 1), month.getActualMaximum(GregorianCalendar.MONTH), 1);
         } else {

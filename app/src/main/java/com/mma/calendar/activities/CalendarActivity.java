@@ -35,7 +35,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -83,9 +82,10 @@ public class CalendarActivity extends ActionBarActivity {
         //       setContentView(R.layout.calendar_month_view);
         setContentView(R.layout.test);
         CalendarView v = (CalendarView) findViewById(R.id.calendar);
-        v.setFirstDayOfWeek(Calendar.MONDAY);
+
         v.setDate(System.currentTimeMillis());
-        v.setWeekSeparatorLineColor(Color.BLACK);
+
+
         v.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
@@ -94,7 +94,6 @@ public class CalendarActivity extends ActionBarActivity {
         });
 
 
-        v.animate();
 
 //        initActionBar();
 

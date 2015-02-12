@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
-    <string name="app_name">Calendar</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_registration">RegistrationActivity</string>
-    <string name="action_add_event">New event</string>
-
-
     <string name="monthTitleFont">roboto_light</string>
     <string name="dayOfWeekFont">roboto_regular</string>
     <string name="dayOfMonthFont">roboto_light</string>
     <string name="currentDayOfMonthFont">roboto_light</string>
+    <string name="action_settings">Seting</string>
+    <string name="app_name">asdf</string>
 
 </resources>

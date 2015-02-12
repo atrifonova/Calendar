@@ -1,46 +1,121 @@
 package com.mma.calendar.activities;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
+
+import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
-import com.mma.calendar.adapters.CalendarMonthAdapter;
-import com.mma.calendar.database.DataSource;
-import com.mma.calendar.model.User;
-import com.mma.calendar.util.Utility;
 
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 
-public class CalendarActivity extends ActionBarActivity {
+public class CalendarActivity
+        extends Activity
+        implements RobotoCalendarView.RobotoCalendarListener {
+
+    private RobotoCalendarView robotoCalendarView;
+    private int currentMonthIndex;
+    private Calendar currentCalendar;
+    private Button markButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Gets the calendar from the view
+        robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
+        markButton = (Button) findViewById(R.id.markButton);
+        markButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                markSomeRandomDaysInCalendar();
+            }
+        });
+
+        // Set listener, in this case, the same activity
+        robotoCalendarView.setRobotoCalendarListener(this);
+
+        // Initialize the RobotoCalendarPicker with the current index and date
+        currentMonthIndex = 0;
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+
+        // Mark current day
+        robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
+
+        // Mark some random days. These days are not fixed, if you change the
+        // month they will be cleaned
+        markSomeRandomDaysInCalendar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public void onDateSelected(Date date) {
+
+        // Mark calendar day
+        robotoCalendarView.markDayAsSelectedDay(date);
+
+        // Do your own stuff
+        // ...
+    }
+
+    @Override
+    public void onRightButtonClick() {
+        currentMonthIndex++;
+        updateCalendar();
+    }
+
+    @Override
+    public void onLeftButtonClick() {
+        currentMonthIndex--;
+        updateCalendar();
+    }
+
+    private void updateCalendar() {
+        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar.add(Calendar.MONTH, currentMonthIndex);
+        robotoCalendarView.initializeCalendar(currentCalendar);
+    }
+
+    private void markSomeRandomDaysInCalendar() {
+        final Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < 15; i++) {
+            final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.add(Calendar.DAY_OF_MONTH, random.nextInt(20));
+
+            final int style = random.nextInt(3);
+            switch (style) {
+                case 0:
+                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, calendar.getTime());
+                    break;
+                case 1:
+                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.GREEN_CIRCLE, calendar.getTime());
+                    break;
+                case 2:
+                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.RED_CIRCLE, calendar.getTime());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+
+    /*
 
     final private static int DIALOG_LOGIN = 1;
 
@@ -85,6 +160,14 @@ public class CalendarActivity extends ActionBarActivity {
 
         v.setDate(System.currentTimeMillis());
 
+        v.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+
+                return false;
+            }
+        });
 
         v.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -354,3 +437,4 @@ public class CalendarActivity extends ActionBarActivity {
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
     }
 }
+*/

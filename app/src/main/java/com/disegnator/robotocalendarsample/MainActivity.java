@@ -15,21 +15,19 @@
  */
 package com.disegnator.robotocalendarsample;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.disegnator.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
 import com.mma.calendar.R;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 //import com.disegnator.robotocalendar.RobotoCalendarView;
 //import com.disegnator.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
 
@@ -56,8 +54,9 @@ public class MainActivity
 
 		// Gets the calendar from the view
 		robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
-		markButton = (Button) findViewById(R.id.markButton);
-		markButton.setOnClickListener(new OnClickListener()
+        //	markButton = (Button) findViewById(R.id.markButton);
+    /*
+            markButton.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -65,8 +64,8 @@ public class MainActivity
 				markSomeRandomDaysInCalendar();
 			}
 		});
-
-		// Set listener, in this case, the same activity
+*/
+        // Set listener, in this case, the same activity
 		robotoCalendarView.setRobotoCalendarListener(this);
 
 		// Initialize the RobotoCalendarPicker with the current index and date

@@ -33,14 +33,15 @@ public class CalendarActivity
 
         // Gets the calendar from the view
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
+        /*
         markButton = (Button) findViewById(R.id.markButton);
         markButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                markSomeRandomDaysInCalendar();
+               // markSomeRandomDaysInCalendar();
             }
         });
-
+*/
         // Set listener, in this case, the same activity
         robotoCalendarView.setRobotoCalendarListener(this);
 
@@ -54,6 +55,7 @@ public class CalendarActivity
         // Mark some random days. These days are not fixed, if you change the
         // month they will be cleaned
         markSomeRandomDaysInCalendar();
+        robotoCalendarView.markDayAsSelectedDay(new Date(System.currentTimeMillis()));
     }
 
     @Override

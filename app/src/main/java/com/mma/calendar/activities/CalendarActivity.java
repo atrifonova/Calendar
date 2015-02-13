@@ -4,8 +4,6 @@ package com.mma.calendar.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.disegnator.robotocalendar.RobotoCalendarView;
@@ -14,7 +12,6 @@ import com.mma.calendar.R;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 
 public class CalendarActivity
@@ -54,7 +51,7 @@ public class CalendarActivity
 
         // Mark some random days. These days are not fixed, if you change the
         // month they will be cleaned
-        markSomeRandomDaysInCalendar();
+        //markSomeRandomDaysInCalendar();
         robotoCalendarView.markDayAsSelectedDay(new Date(System.currentTimeMillis()));
     }
 
@@ -92,7 +89,7 @@ public class CalendarActivity
         robotoCalendarView.initializeCalendar(currentCalendar);
     }
 
-    private void markSomeRandomDaysInCalendar() {
+/*    private void markSomeRandomDaysInCalendar() {
         final Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < 15; i++) {
             final Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -113,7 +110,7 @@ public class CalendarActivity
                     break;
             }
         }
-    }
+    }*/
 }
 
 

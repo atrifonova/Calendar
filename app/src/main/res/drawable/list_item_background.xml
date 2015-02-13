@@ -7,5 +7,4 @@
     	  android:drawable="@drawable/calendar_cel_selectl"
           android:state_focused="true" />
     <item  
-     	  android:drawable="@drawable/calendar_cell" />
-</selector>
+     	  android:drawable="@drawable/calendar_cell" /></selector>

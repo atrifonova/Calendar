@@ -27,9 +27,6 @@ import com.mma.calendar.R;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
-//import com.disegnator.robotocalendar.RobotoCalendarView;
-//import com.disegnator.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
 
 /**
  * Sample Activity
@@ -55,16 +52,7 @@ public class MainActivity
 		// Gets the calendar from the view
 		robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         //	markButton = (Button) findViewById(R.id.markButton);
-    /*
-            markButton.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				markSomeRandomDaysInCalendar();
-			}
-		});
-*/
+
         // Set listener, in this case, the same activity
 		robotoCalendarView.setRobotoCalendarListener(this);
 
@@ -77,7 +65,7 @@ public class MainActivity
 
 		// Mark some random days. These days are not fixed, if you change the
 		// month they will be cleaned
-		markSomeRandomDaysInCalendar();
+		//markSomeRandomDaysInCalendar();
 	}
 
 	@Override
@@ -94,8 +82,6 @@ public class MainActivity
 		// Mark calendar day
 		robotoCalendarView.markDayAsSelectedDay(date);
 
-		// Do your own stuff
-		// ...
 	}
 
 	@Override
@@ -119,7 +105,7 @@ public class MainActivity
 		robotoCalendarView.initializeCalendar(currentCalendar);
 	}
 
-	private void markSomeRandomDaysInCalendar()
+/*	private void markSomeRandomDaysInCalendar()
 	{
 		final Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < 15; i++)
@@ -143,5 +129,5 @@ public class MainActivity
 				break;
 			}
 		}
-	}
+	}*/
 }

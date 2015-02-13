@@ -15,11 +15,6 @@
  */
 package com.disegnator.robotocalendar;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -34,6 +29,11 @@ import android.widget.TextView;
 
 import com.disegnator.robotocalendar.font.RobotoTypefaceManager;
 import com.mma.calendar.R;
+
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * The roboto calendar view
@@ -68,9 +68,9 @@ public class RobotoCalendarView
 	private int dayOfMonthColor;
 	private int dayOfMonthFont;
 
-	public static final int RED_CIRCLE = R.drawable.red_circle;
-	public static final int GREEN_CIRCLE = R.drawable.green_circle;
-	public static final int BLUE_CIRCLE = R.drawable.blue_circle;
+	//public static final int RED_CIRCLE = R.drawable.red_circle;
+	//public static final int GREEN_CIRCLE = R.drawable.green_circle;
+	//public static final int BLUE_CIRCLE = R.drawable.blue_circle;
 
 	// ************************************************************************************************************************************************************************
 	// * Initialization methods
@@ -203,7 +203,7 @@ public class RobotoCalendarView
 			dayOfWeek = (TextView) view.findViewWithTag("dayOfWeek" + getWeekIndex(i, currentCalendar));
 			dayOfTheWeekString = weekDaysArray[i];
 
-			// Check it for languages with only one week day lenght
+			// Check it for languages with only one week day length
 			if (dayOfTheWeekString.length() > 1)
 			{
 				dayOfTheWeekString = dayOfTheWeekString.substring(0, 1).toUpperCase() + dayOfTheWeekString.subSequence(1, 2);

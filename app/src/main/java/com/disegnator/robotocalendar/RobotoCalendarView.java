@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.disegnator.robotocalendar.font.RobotoTypefaceManager;
 import com.mma.calendar.R;
@@ -462,6 +463,8 @@ public class RobotoCalendarView
 		currentCalendar.setTime(currentDate);
 		ViewGroup dayOfMonthContainer = getDayOfMonthContainer(currentCalendar);
 		dayOfMonthContainer.setBackgroundResource(R.drawable.blue_ring);
+
+        Toast.makeText(context, "EEEE", Toast.LENGTH_LONG).show();
 	}
 
 	public void markDayWithStyle(int style, Date currentDate)

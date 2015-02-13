@@ -18,7 +18,6 @@ package com.disegnator.robotocalendarsample;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.Button;
 
 import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.disegnator.robotocalendar.RobotoCalendarView.RobotoCalendarListener;
@@ -41,7 +40,6 @@ public class MainActivity
 	private RobotoCalendarView robotoCalendarView;
 	private int currentMonthIndex;
 	private Calendar currentCalendar;
-	private Button markButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -62,10 +60,6 @@ public class MainActivity
 
 		// Mark current day
 		robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
-
-		// Mark some random days. These days are not fixed, if you change the
-		// month they will be cleaned
-		//markSomeRandomDaysInCalendar();
 	}
 
 	@Override

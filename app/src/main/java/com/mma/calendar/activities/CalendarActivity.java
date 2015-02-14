@@ -22,6 +22,7 @@ public class CalendarActivity
     private int currentMonthIndex;
     private Calendar currentCalendar;
     private Button markButton;
+    private Locale locale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class CalendarActivity
         setContentView(R.layout.activity_main);
 
         // Gets the calendar from the view
+        locale = new Locale("Bulgaria", "BG");
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
         /*
         markButton = (Button) findViewById(R.id.markButton);
@@ -44,7 +46,7 @@ public class CalendarActivity
 
         // Initialize the RobotoCalendarPicker with the current index and date
         currentMonthIndex = 0;
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar = Calendar.getInstance(locale);
 
         // Mark current day
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
@@ -84,7 +86,7 @@ public class CalendarActivity
     }
 
     private void updateCalendar() {
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
+        currentCalendar = Calendar.getInstance(locale);
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
     }

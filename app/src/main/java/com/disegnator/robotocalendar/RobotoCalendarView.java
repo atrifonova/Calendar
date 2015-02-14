@@ -163,10 +163,10 @@ public class RobotoCalendarView
 	private void initializeComponentBehavior()
 	{
 		// Initialize calendar for current month
-		Locale locale = context.getResources().getConfiguration().locale;
-		Calendar currentCalendar = Calendar.getInstance(locale);
-		initializeCalendar(currentCalendar);
-	}
+        Calendar currentCalendar = Calendar.getInstance(locale);
+        currentCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        initializeCalendar(currentCalendar);
+    }
 
 	// ************************************************************************************************************************************************************************
 	// * Private auxiliary methods
@@ -323,7 +323,7 @@ public class RobotoCalendarView
 
 	private int getMonthOffset(Calendar currentCalendar)
 	{
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(locale);
 		calendar.setTime(currentCalendar.getTime());
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		int firstDayWeekPosition = calendar.getFirstDayOfWeek();
@@ -424,10 +424,9 @@ public class RobotoCalendarView
 	{
 
 		this.currentCalendar = currentCalendar;
-		locale = context.getResources().getConfiguration().locale;
-
-		// Set date title
-		initializeTitleLayout();
+        locale = new Locale("Bulgaria", "BG");
+        // Set date title
+        initializeTitleLayout();
 
 		// Set weeks days titles
 		initializeWeekDaysLayout();
@@ -441,7 +440,6 @@ public class RobotoCalendarView
 
 	public void markDayAsCurrentDay(Date currentDate)
 	{
-		Locale locale = context.getResources().getConfiguration().locale;
 		Calendar currentCalendar = Calendar.getInstance(locale);
 		currentCalendar.setTime(currentDate);
 		TextView dayOfMonth = getDayOfMonthText(currentCalendar);
@@ -458,7 +456,6 @@ public class RobotoCalendarView
 		// Clear previous marks
 		clearDayOfMonthContainerBackground();
 
-		Locale locale = context.getResources().getConfiguration().locale;
 		Calendar currentCalendar = Calendar.getInstance(locale);
 		currentCalendar.setTime(currentDate);
 		ViewGroup dayOfMonthContainer = getDayOfMonthContainer(currentCalendar);
@@ -469,7 +466,6 @@ public class RobotoCalendarView
 
 	public void markDayWithStyle(int style, Date currentDate)
 	{
-		Locale locale = context.getResources().getConfiguration().locale;
 		Calendar currentCalendar = Calendar.getInstance(locale);
 		currentCalendar.setTime(currentDate);
 		ImageView dayOfMonthImage = getDayOfMonthImage(currentCalendar);

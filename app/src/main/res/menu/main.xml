@@ -13,8 +13,9 @@
 
     <item
         android:id="@+id/action_create_event"
-        android:showAsAction="always"
+        android:orderInCategory="1"
+        android:showAsAction="collapseActionView|ifRoom"
         android:icon="@drawable/icon_add_event"
-        android:title="AddEvent"/>
+        android:title="Add Event"/>
 
 </menu>

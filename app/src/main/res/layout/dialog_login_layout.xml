@@ -43,6 +43,17 @@
             android:layout_toRightOf="@+id/btn_log_in"
             android:text="Cancel"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_cancel"
+            android:id="@+id/txt_registration"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:clickable="true"
+            android:text="Don't have account?"/>
+
     </RelativeLayout>
 
 </LinearLayout>

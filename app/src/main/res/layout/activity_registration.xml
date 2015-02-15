@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
         android:padding="10sp">
 
         <ImageButton
@@ -15,37 +14,46 @@
             android:layout_height="wrap_content"
             android:id="@+id/img_profile"
             android:background="@drawable/profile_image"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"/>
 
         <EditText
             android:id="@+id/txt_user_name_registration"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/img_profile"
             android:hint="User Name"
-            android:singleLine="true">
-
-            <requestFocus/>
+            android:singleLine="true"
+            android:layout_marginTop="30dp">
 
         </EditText>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txt_user_password_registration"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:layout_below="@+id/txt_user_name_registration"
+            android:layout_marginTop="15dp"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txt_first_name"
             android:hint="First Name"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:layout_below="@+id/txt_user_password_registration"
+            android:layout_marginTop="15dp"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txt_last_name"
             android:hint="Last Name"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:layout_below="@+id/txt_first_name"
+            android:layout_marginTop="15dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -53,16 +61,20 @@
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/txt_email"
-            android:hint="Email"/>
+            android:hint="Email"
+            android:layout_below="@+id/txt_last_name"
+            android:layout_marginTop="15dp"/>
 
 
         <Button
             android:layout_width="364dp"
             android:layout_height="wrap_content"
             android:text="Registration"
-            android:id="@+id/btn_registration" />
+            android:id="@+id/btn_registration"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/txt_email"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </ScrollView>

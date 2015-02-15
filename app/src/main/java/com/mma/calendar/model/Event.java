@@ -1,150 +1,81 @@
 package com.mma.calendar.model;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 /**
  * Created by Toni on 04-Feb-15.
  */
-public class Event {
-    private long eventID;
-    private String eventTitle;
-    private String eventDescription;
+@ParseClassName("Event")
+
+public class Event extends ParseObject {
+/*
     private String eventLocation;
-    private String eventPhoto;
-    private String eventColor;
-    private String eventStartDate;
-    private String eventEndDate;
-    private String eventStartTime;
-    private String eventEndTime;
+*/
 
-    public Event() {
-        this(0, "", "", "", "", "", "", "", "", "");
+    public Event () {
+
     }
 
-    public Event(long newEventID, String newEventTitle, String newEventDescription, String newEventLocation, String newEventPhoto, String newEventColor, String newEventStartDate, String newEventEndDate, String newEventStartTime, String newEventEndTime) {
-        setEventID(newEventID);
-        setEventTitle(newEventTitle);
-        setEventDescription(newEventDescription);
-        setEventLocation(newEventLocation);
-        setEventPhoto(newEventPhoto);
-        setEventColor(newEventColor);
-        setEventStartDate(newEventStartDate);
-        setEventEndDate(newEventEndDate);
-        setEventStartTime(newEventStartTime);
-        setEventEndTime(newEventEndTime);
+    public String getTitle() {
+        return getString("title");
     }
 
-    public long getEventID() {
-        return eventID;
+    public void setTitle (String title) {
+        put("title", title);
     }
 
-    public void setEventID(long eventID) {
-        this.eventID = eventID;
+    public String getDescription(){
+        return getString("description");
     }
 
-    public String getEventTitle() {
-        return eventTitle;
+    public void setDescription(String description){
+        put("description", description);
     }
 
-    public void setEventTitle(String newEventTitle) {
-        if (newEventTitle != null) {
-            eventTitle = newEventTitle;
-        } else {
-            eventTitle = "";
-        }
+/*    public String getImage() {
+        return getString("image");
     }
 
-    public String getEventDescription() {
-        return eventDescription;
+    public void setImage(String image) {
+        put("image", image);
+    }*/
+
+    public String getStartDate() {
+        return getString("startDate");
     }
 
-    public void setEventDescription(String newEventDescription) {
-        if (newEventDescription != null) {
-            eventDescription = newEventDescription;
-        } else {
-            eventDescription = "";
-        }
+    public void setStartDate(String startDate) {
+        put("startDate", startDate);
     }
 
-    public String getEventLocation() {
-        return eventLocation;
+    public String getEndDate() {
+        return getString("endDate");
     }
 
-    public void setEventLocation(String newEventLocation) {
-        if (newEventLocation != null) {
-            eventLocation = newEventLocation;
-        } else {
-            eventLocation = "";
-        }
+    public void setEndDate(String endDate) {
+        put("endDate", endDate);
     }
 
-    public String getEventPhoto() {
-        return eventPhoto;
+    public String getStartTime() {
+        return getString("startTime");
     }
 
-    public void setEventPhoto(String newEventPhoto) {
-        if (newEventPhoto != null) {
-            eventPhoto = newEventPhoto;
-        } else {
-            eventPhoto = "";
-        }
+    public void setStartTime(String startTime) {
+        put("startTime", startTime);
     }
 
-    public String getEventColor() {
-        return eventColor;
+    public String getEndTime() {
+        return getString("endTime");
     }
 
-    public void setEventColor(String newEventColor) {
-        if (newEventColor != null) {
-            eventColor = newEventColor;
-        } else {
-            eventColor = "";
-        }
+    public void setEndTime(String endTime) {
+        put("endTime", endTime);
     }
 
-    public String getEventStartDate() {
-        return eventStartDate;
+    public void setUser(ParseUser currentUser) {
+        put("user", currentUser);
     }
 
-    public void setEventStartDate(String newEventStartDate) {
-        if (newEventStartDate != null) {
-            eventStartDate = newEventStartDate;
-        } else {
-            eventStartDate = "";
-        }
-    }
-
-    public String getEventEndDate() {
-        return eventEndDate;
-    }
-
-    public void setEventEndDate(String newEventEndDate) {
-        if (newEventEndDate != null) {
-            eventEndDate = newEventEndDate;
-        } else {
-            eventEndDate = "";
-        }
-    }
-
-    public String getEventStartTime() {
-        return eventStartTime;
-    }
-
-    public void setEventStartTime(String newEventStartTime) {
-        if (newEventStartTime != null) {
-            eventStartTime = newEventStartTime;
-        } else {
-            eventStartTime = "";
-        }
-    }
-
-    public String getEventEndTime() {
-        return eventEndTime;
-    }
-
-    public void setEventEndTime(String newEventEndTime) {
-        if (newEventEndTime != null) {
-            eventEndTime = newEventEndTime;
-        } else {
-            eventEndTime = "";
-        }
-    }
 }

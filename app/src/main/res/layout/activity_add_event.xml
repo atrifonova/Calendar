@@ -1,0 +1,147 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.mma.calendar.activities.AddEvent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_event_title"
+            android:hint="Event Title"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:layout_marginLeft="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txt_start_date"
+            android:layout_below="@+id/txt_event_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="49dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:layout_marginLeft="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txt_end_date"
+            android:layout_below="@+id/txt_start_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9 : 00"
+            android:layout_marginRight="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txt_start_time"
+            android:layout_alignTop="@+id/txt_start_date"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 : 00"
+            android:layout_marginRight="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txt_end_time"
+            android:layout_alignTop="@+id/txt_end_date"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add location"
+            android:id="@+id/btn_add_location"
+            android:background="@drawable/icon_location"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="61dp"
+            android:layout_below="@+id/txt_end_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add People"
+            android:id="@+id/btn_add_user"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/icon_add_user"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/btn_add_location"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/txt_event_description"
+            android:hint="Event Description"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/btn_add_user"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="38dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_event_description"
+            android:layout_marginTop="43dp"
+            android:id="@+id/btn_create_event"
+            android:text="Create Event"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_add_location"
+            android:layout_toRightOf="@+id/txt_end_date"
+            android:layout_above="@+id/btn_add_user"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:hint="Add Location"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_add_user"
+            android:layout_toRightOf="@+id/txt_start_date"
+            android:layout_above="@+id/txt_event_description"
+            android:hint="Add Users"
+            android:layout_alignRight="@+id/txt_end_time"
+            android:layout_alignEnd="@+id/txt_end_time" />
+
+    </RelativeLayout>
+
+
+</ScrollView>

@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_create_event"
         android:orderInCategory="1"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:icon="@drawable/icon_add_event"
         android:title="Add Event"/>
 

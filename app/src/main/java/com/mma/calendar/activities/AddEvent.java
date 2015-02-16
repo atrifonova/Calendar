@@ -32,7 +32,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     int mm = cal.get(Calendar.MONTH);
     int yy = cal.get(Calendar.YEAR);
 
-//    private ImageButton btnAddLocation;
+    //    private ImageButton btnAddLocation;
 //    private ImageButton btnAddPeople;
     private Button btnCreateEvent;
 
@@ -45,7 +45,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
     }
 
-    private void init () {
+    private void init() {
         inputTitle = (EditText) findViewById(R.id.txt_event_title);
         inputDescription = (EditText) findViewById(R.id.txt_event_description);
 
@@ -96,12 +96,12 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                     Event event = new Event();
                     event.setACL(new ParseACL(ParseUser.getCurrentUser()));
                     event.setUser(ParseUser.getCurrentUser());
-                    event.setTitle(inputTitle.toString());
-                    event.setDescription(inputDescription.toString());
-                    event.setStartDate(inputStartDate.toString());
-                    event.setEndDate(inputEndDate.toString());
-                    event.setStartTime(inputStartTime.toString());
-                    event.setEndTime(inputEndTime.toString());
+                    event.setTitle(inputTitle.getText().toString());
+                    event.setDescription(inputDescription.getText().toString());
+                    event.setStartDate(inputStartDate.getText().toString());
+                    event.setEndDate(inputEndDate.getText().toString());
+                    event.setStartTime(inputStartTime.getText().toString());
+                    event.setEndTime(inputEndTime.getText().toString());
                     event.saveEventually();
 
                     Intent intent = new Intent(AddEvent.this, CalendarActivity.class);

@@ -80,6 +80,14 @@ public class CalendarActivity extends ActionBarActivity
             Intent intent = new Intent(CalendarActivity.this, AddEvent.class);
             startActivity(intent);
         }
+        if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

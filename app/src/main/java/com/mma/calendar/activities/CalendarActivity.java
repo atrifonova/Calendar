@@ -54,6 +54,13 @@ public class CalendarActivity extends ActionBarActivity
         ParseAnalytics.trackAppOpened(getIntent());
         ParseObject.registerSubclass(Event.class);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser == null){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @Override
@@ -69,21 +76,11 @@ public class CalendarActivity extends ActionBarActivity
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == R.id.action_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
         if (id == R.id.action_create_event) {
             Intent intent = new Intent(CalendarActivity.this, AddEvent.class);
             startActivity(intent);
         }
-        if (id == R.id.action_logout) {
-            ParseUser.logOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 

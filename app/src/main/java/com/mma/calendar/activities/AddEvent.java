@@ -50,10 +50,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         inputDescription = (EditText) findViewById(R.id.txt_event_description);
 
         inputStartDate = (TextView) findViewById(R.id.txt_start_date);
-        inputStartDate.setText(new StringBuilder()
-                .append(dd).append(" . ")
-                .append(mm + 1).append(" . ")
-                .append(yy));
+        //inputStartDate.setText(currentDate);
 
         inputEndDate = (TextView) findViewById(R.id.txt_end_date);
         inputEndDate.setText(new StringBuilder()

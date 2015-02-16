@@ -17,8 +17,10 @@ package com.disegnator.robotocalendar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,9 +71,11 @@ public class RobotoCalendarView
 	private int dayOfMonthColor;
 	private int dayOfMonthFont;
 
-	//public static final int RED_CIRCLE = R.drawable.red_circle;
-	//public static final int GREEN_CIRCLE = R.drawable.green_circle;
-	//public static final int BLUE_CIRCLE = R.drawable.blue_circle;
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+	public static final int RED_CIRCLE = R.drawable.red_circle;
+	public static final int GREEN_CIRCLE = R.drawable.green_circle;
+	public static final int BLUE_CIRCLE = R.drawable.blue_circle;
 
 	// ************************************************************************************************************************************************************************
 	// * Initialization methods
@@ -461,7 +465,11 @@ public class RobotoCalendarView
 		ViewGroup dayOfMonthContainer = getDayOfMonthContainer(currentCalendar);
 		dayOfMonthContainer.setBackgroundResource(R.drawable.blue_ring);
 
-        Toast.makeText(context, "EEEE", Toast.LENGTH_LONG).show();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("CURRENT_DATE", currentDate.toString());
+        editor.apply();
+
+        Toast.makeText(context, currentDate.toString(), Toast.LENGTH_LONG).show();
 	}
 
 	public void markDayWithStyle(int style, Date currentDate)

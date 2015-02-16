@@ -33,13 +33,13 @@ public class Event extends ParseObject {
     public void setDescription(String description){
         put("description", description);
     }
-
-/*    public String getImage() {
-        return getString("image");
+/*
+    public void setLocation (ParseGeoPoint location) {
+        put("location", location);
     }
 
-    public void setImage(String image) {
-        put("image", image);
+    public ParseGeoPoint getLocation () {
+        return getParseGeoPoint("location");
     }*/
 
     public String getStartDate() {

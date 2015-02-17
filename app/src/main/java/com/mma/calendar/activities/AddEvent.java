@@ -1,6 +1,8 @@
 package com.mma.calendar.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -32,14 +34,17 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     int mm = cal.get(Calendar.MONTH);
     int yy = cal.get(Calendar.YEAR);
 
-    //    private ImageButton btnAddLocation;
-//    private ImageButton btnAddPeople;
     private Button btnCreateEvent;
+
+    SharedPreferences sharedPreferences = null;
+    String getDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
         init();
 
@@ -50,13 +55,12 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         inputDescription = (EditText) findViewById(R.id.txt_event_description);
 
         inputStartDate = (TextView) findViewById(R.id.txt_start_date);
-        //inputStartDate.setText(currentDate);
+        getDate = sharedPreferences.getString("KEY", "");
+        inputStartDate.setText(getDate);
 
         inputEndDate = (TextView) findViewById(R.id.txt_end_date);
-        inputEndDate.setText(new StringBuilder()
-                .append(dd).append(" . ")
-                .append(mm + 1).append(" . ")
-                .append(yy));
+        getDate = sharedPreferences.getString("KEY", "");
+        inputEndDate.setText(getDate);
 
         inputStartTime = (TextView) findViewById(R.id.txt_start_time);
         inputEndTime = (TextView) findViewById(R.id.txt_end_time);

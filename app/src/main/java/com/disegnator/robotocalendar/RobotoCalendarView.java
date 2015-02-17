@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,7 @@ import com.disegnator.robotocalendar.font.RobotoTypefaceManager;
 import com.mma.calendar.R;
 
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -71,7 +71,9 @@ public class RobotoCalendarView
 	private int dayOfMonthColor;
 	private int dayOfMonthFont;
 
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+    SharedPreferences sharedPreferences = getContext().getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    String currentDateFormat;
 
 	public static final int RED_CIRCLE = R.drawable.red_circle;
 	public static final int GREEN_CIRCLE = R.drawable.green_circle;
@@ -466,7 +468,8 @@ public class RobotoCalendarView
 		dayOfMonthContainer.setBackgroundResource(R.drawable.blue_ring);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("CURRENT_DATE", currentDate.toString());
+        currentDateFormat = dateFormat.format(currentDate);
+        editor.putString("KEY", currentDateFormat);
         editor.apply();
 
         Toast.makeText(context, currentDate.toString(), Toast.LENGTH_LONG).show();

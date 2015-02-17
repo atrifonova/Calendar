@@ -27,6 +27,8 @@
             android:layout_height="wrap_content"
             android:text="Start Date"
             android:layout_marginLeft="15dp"
+            android:clickable="true"
+            android:onClick="showStartDate"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/txt_start_date"
             android:layout_below="@+id/txt_event_title"

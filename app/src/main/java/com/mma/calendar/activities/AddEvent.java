@@ -1,5 +1,7 @@
 package com.mma.calendar.activities;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,12 +32,15 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TextView inputStartTime;
     private TextView inputEndTime;
 
-    final Calendar cal = Calendar.getInstance();
-    int dd = cal.get(Calendar.DAY_OF_MONTH);
-    int mm = cal.get(Calendar.MONTH);
-    int yy = cal.get(Calendar.YEAR);
-
     private Button btnCreateEvent;
+
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
+
+    public static final int START_DATE_DIALOG = 1;
+    public static final int END_DATE_DIALOG = 2;
 
     SharedPreferences sharedPreferences = null;
     String getDate;
@@ -47,6 +53,11 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
         init();
+
+        calendar = Calendar.getInstance();
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
 
     }
 
@@ -88,6 +99,32 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         return false;
     }
 
+    public void showStartDate(View v) {
+        //Toast.makeText(AddEvent.this, "qwqwq", Toast.LENGTH_LONG).show();
+        showDialog(1);
+    }
+
+    protected Dialog onCreateDialog (int id) {
+        Dialog dialog = null;
+        switch (id) {
+            case START_DATE_DIALOG:
+                dialog = new DatePickerDialog(this, datePickerListenerStartDate, year, month, day);
+                break;
+        }
+
+        return dialog;
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListenerStartDate = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+
+            String startDate = selectedDay + "." + ( selectedMonth + 1 ) + "." + selectedYear;
+            inputStartDate.setText(startDate);
+
+        }
+    };
+
 
     @Override
     public void onClick(View v) {
@@ -107,6 +144,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
                     Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
                     startActivity(intent);
+
+                    break;
                 }
         }
     }

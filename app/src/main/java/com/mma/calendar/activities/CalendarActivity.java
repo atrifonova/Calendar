@@ -33,7 +33,11 @@ public class CalendarActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        getSupportActionBar().setTitle("asdf");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        getSupportActionBar().setIcon(R.drawable.ic_launcher);
         // Gets the calendar from the view
         locale = new Locale("Bulgaria", "BG");
         robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);

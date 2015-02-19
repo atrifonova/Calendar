@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -50,6 +51,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
     private int hour;
     private int minutes;
+
+    private ImageButton btn_add_location;
 
     public static final int START_DATE_DIALOG = 1;
     public static final int END_DATE_DIALOG = 2;
@@ -95,6 +98,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
         btnCreateEvent = (Button) findViewById(R.id.btn_create_event);
         btnCreateEvent.setOnClickListener(AddEvent.this);
+
+        btn_add_location = (ImageButton) findViewById(R.id.btn_add_location);
+        btn_add_location.setOnClickListener(this);
+
     }
 
     @Override
@@ -218,6 +225,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
                     break;
                 }
+            case R.id.btn_add_location:
+                Intent intent = new Intent(getApplicationContext(), MapPicker.class);
+                startActivityForResult(intent, 1);
+                break;
         }
     }
 

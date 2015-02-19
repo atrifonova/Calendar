@@ -40,6 +40,7 @@ public class MapPicker extends FragmentActivity {
                 setUpMap();
             }
         }
+
     }
 
     /**

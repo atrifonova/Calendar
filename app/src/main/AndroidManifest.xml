@@ -19,7 +19,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
-      <!--
+
+        <!--
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="6587000" />
@@ -52,20 +53,26 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
-
         <activity
             android:name=".activities.MapPicker"
-            android:label="Map Picker">
-
+            android:label="Map Picker" >
         </activity>
 
         <service
             android:name=".services.CalendarAlarmService"
-            android:enabled="true">
+            android:enabled="true" >
         </service>
 
-        <receiver android:name=".services.CalendarReceiver"/>
+        <receiver android:name=".services.CalendarReceiver" />
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" >
+        </activity>
     </application>
 
 </manifest>

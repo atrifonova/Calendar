@@ -15,5 +15,6 @@
     <string name="currentDayOfMonthFont">roboto_light</string>
     <string name="title_activity_add_event">AddEvent</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

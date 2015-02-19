@@ -33,7 +33,7 @@ public class CalendarActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getSupportActionBar().setTitle("asdf");
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
@@ -120,30 +120,4 @@ public class CalendarActivity extends ActionBarActivity
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
     }
-/*
-    private void markSomeRandomDaysInCalendar()
-    {
-        final Random random = new Random(System.currentTimeMillis());
-        for (int i = 0; i < 15; i++)
-        {
-            final Calendar calendar = Calendar.getInstance(locale);
-            calendar.add(Calendar.DAY_OF_MONTH, random.nextInt(20));
-
-            final int style = random.nextInt(3);
-            switch (style)
-            {
-                case 0:
-                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, calendar.getTime());
-                    break;
-                case 1:
-                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.GREEN_CIRCLE, calendar.getTime());
-                    break;
-                case 2:
-                    robotoCalendarView.markDayWithStyle(RobotoCalendarView.RED_CIRCLE, calendar.getTime());
-                    break;
-                default:
-                    break;
-            }
-        }
-    }*/
 }

@@ -27,13 +27,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.disegnator.robotocalendar.font.RobotoTypefaceManager;
 import com.mma.calendar.R;
 
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -72,8 +70,6 @@ public class RobotoCalendarView
 	private int dayOfMonthFont;
 
     SharedPreferences sharedPreferences = getContext().getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    String currentDateFormat;
 
 	public static final int RED_CIRCLE = R.drawable.red_circle;
 	public static final int GREEN_CIRCLE = R.drawable.green_circle;
@@ -458,7 +454,6 @@ public class RobotoCalendarView
 
 	public void markDayAsSelectedDay(Date currentDate)
 	{
-
 		// Clear previous marks
 		clearDayOfMonthContainerBackground();
 
@@ -468,11 +463,10 @@ public class RobotoCalendarView
 		dayOfMonthContainer.setBackgroundResource(R.drawable.blue_ring);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        currentDateFormat = dateFormat.format(currentDate);
-        editor.putString("KEY", currentDateFormat);
+        editor.putLong("KEY", currentDate.getTime());
         editor.apply();
 
-        Toast.makeText(context, currentDate.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, currentDate.toString(), Toast.LENGTH_LONG).show();
 	}
 
 	public void markDayWithStyle(int style, Date currentDate)

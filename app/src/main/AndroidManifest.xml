@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -18,7 +19,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="6587000" />
@@ -26,10 +26,9 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity
             android:name=".activities.CalendarActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +50,14 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
+
+        <service
+            android:name=".services.CalendarAlarmService"
+            android:enabled="true">
+        </service>
+
+        <receiver android:name=".services.CalendarReceiver"/>
+
     </application>
 
 </manifest>

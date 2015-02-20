@@ -146,7 +146,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 dialog = new DatePickerDialog(this, datePickerListenerStartDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
                 break;
             case END_DATE_DIALOG:
-                //???
                 dialog = new DatePickerDialog(this, datePickerListenerEndDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
                 break;
             case START_TIME_DIALOG:

@@ -90,12 +90,13 @@ public class MapPicker extends FragmentActivity {
 
 
     public void setCurrentLocation() {
-     /*   mMap.setMyLocationEnabled(true);
-Location myLoction = mMap.getMyLocation();
-LonLat location = new Lo (        myLoction.getLatitude(),
-        myLoction.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 10);
-        mMap.animateCamera(cameraUpdate);*/
+        mMap.setMyLocationEnabled(true);
+        Location myLoction = mMap.getMyLocation();
+        if (myLoction != null) {
+            LatLng location = new LatLng(myLoction.getLatitude(), myLoction.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 10);
+            mMap.animateCamera(cameraUpdate);
+        }
     }
 
     @Override

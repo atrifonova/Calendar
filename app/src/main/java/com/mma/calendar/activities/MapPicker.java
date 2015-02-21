@@ -28,8 +28,11 @@ import java.util.Locale;
  */
 public class MapPicker extends FragmentActivity {
     private Button searchButton;
+    private Button getLocation;
     private EditText search;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private LatLng targetLocation;
+    private String address;
 
 
     @Override
@@ -38,6 +41,7 @@ public class MapPicker extends FragmentActivity {
         setContentView(R.layout.map_picker);
 
         init();
+
 
         setUpMapIfNeeded();
         setCurrentLocation();
@@ -51,12 +55,17 @@ public class MapPicker extends FragmentActivity {
             }
         });
 
+        String address = getIntent().getExtras().getString(Constants.ADDRESS);
+        searchAddress(address);
+
 
     }
 
     private void init() {
         searchButton = (Button) findViewById(R.id.search_button);
+        getLocation = (Button) findViewById(R.id.get_location);
         search = (EditText) findViewById(R.id.search);
+
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,20 +76,35 @@ public class MapPicker extends FragmentActivity {
                 }
             }
         });
+
+        getLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (targetLocation != null) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(Constants.LATITUDE, targetLocation.latitude);
+                    returnIntent.putExtra(Constants.LONGITUDE, targetLocation.longitude);
+                    returnIntent.putExtra(Constants.ADDRESS, address);
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
+            }
+        });
     }
 
 
     public void searchAddress(String textToSearch) {
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
+        this.address = textToSearch;
         List<Address> fromLocationName = null;
         try {
             fromLocationName = geocoder.getFromLocationName(textToSearch, 1);
 
             if (fromLocationName != null && fromLocationName.size() > 0) {
                 Address a = fromLocationName.get(0);
-                LatLng l = new LatLng(a.getLatitude(), a.getLongitude());
-                setUpMap(l);
+                targetLocation = new LatLng(a.getLatitude(), a.getLongitude());
+
+                setUpMap(targetLocation);
             }
 
         } catch (IOException e) {
@@ -106,14 +130,10 @@ public class MapPicker extends FragmentActivity {
     }
 
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            // Check if we were successful in obtaining the map.
         }
-
     }
 
     /**
@@ -124,20 +144,6 @@ public class MapPicker extends FragmentActivity {
      */
     public void setUpMap(LatLng latLng) {
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(latLng).title("test 1 "));
     }
-
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                String lat = data.getStringExtra("lat");
-                String lon = data.getStringExtra("lon");
-            }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
-    }//onActivityResult
 }

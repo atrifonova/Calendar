@@ -39,6 +39,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TextView inputEndDate;
     private TextView inputStartTime;
     private TextView inputEndTime;
+    private EditText txtAddLocation;
 
     private Button btnCreateEvent;
 
@@ -101,6 +102,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
         btn_add_location = (ImageButton) findViewById(R.id.btn_add_location);
         btn_add_location.setOnClickListener(this);
+
+        txtAddLocation = (EditText) findViewById(R.id.txt_add_location);
 
     }
 
@@ -226,6 +229,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 }
             case R.id.btn_add_location:
                 Intent intent = new Intent(getApplicationContext(), MapPicker.class);
+                String address = txtAddLocation.getText().toString();
+                intent.putExtra(Constants.ADDRESS,address);
+
                 startActivityForResult(intent, 1);
                 break;
         }
@@ -238,4 +244,19 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             return "0" + String.valueOf(c);
         }
     }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (resultCode == RESULT_OK) {
+            String lat = data.getStringExtra(Constants.LATITUDE);
+            String lon = data.getStringExtra(Constants.LONGITUDE);
+            String address = data.getStringExtra(Constants.ADDRESS);
+            if (address != null) {
+                txtAddLocation.setText(address);
+            }
+        }
+
+    }//onActivityResult
 }

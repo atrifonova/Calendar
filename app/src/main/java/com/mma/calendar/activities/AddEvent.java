@@ -25,11 +25,16 @@ import com.mma.calendar.model.Event;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class AddEvent extends ActionBarActivity implements View.OnClickListener {
+
+    private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private RobotoCalendarView robotoCalendarView;
 
@@ -47,7 +52,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     SharedPreferences sharedPreferences = null;
     long getDate;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private String currentDateFormat;
     private Date theDate;
 
@@ -171,18 +175,31 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
 
             String startDate = selectedDay + "." + ( selectedMonth + 1 ) + "." + selectedYear;
-            inputStartDate.setText(startDate);
 
+            try {
+                Date date = formatter.parse(startDate);
+                startDate = dateFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } finally {
+                inputStartDate.setText(startDate);
+            }
         }
     };
 
     private DatePickerDialog.OnDateSetListener datePickerListenerEndDate = new DatePickerDialog.OnDateSetListener() {
 
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+            String endDate = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
 
-            String startDate = selectedDay + "." + ( selectedMonth + 1 ) + "." + selectedYear;
-            inputEndDate.setText(startDate);
-
+            try {
+                Date date = formatter.parse(endDate);
+                endDate = dateFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } finally {
+                inputEndDate.setText(endDate);
+            }
         }
     };
 

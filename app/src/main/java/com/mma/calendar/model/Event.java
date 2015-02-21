@@ -1,5 +1,6 @@
 package com.mma.calendar.model;
 
+import com.mma.calendar.activities.Constants;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -76,6 +77,34 @@ public class Event extends ParseObject {
 
     public void setUser(ParseUser currentUser) {
         put("user", currentUser);
+    }
+
+
+    public String getAddress() {
+        return getString(Constants.ADDRESS);
+    }
+
+    public void setAddress(String address) {
+        put(Constants.ADDRESS, address);
+    }
+
+
+    public void setLat(double lat) {
+        put(Constants.LATITUDE, lat);
+    }
+
+
+    public void setLon(double lot) {
+        put(Constants.LONGITUDE, lot);
+    }
+
+
+    public double getLot() {
+        return getDouble(Constants.LONGITUDE);
+    }
+
+    public double getLat() {
+        return getDouble(Constants.LATITUDE);
     }
 
 }

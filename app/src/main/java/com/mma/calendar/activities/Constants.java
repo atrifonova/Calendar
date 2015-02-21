@@ -5,8 +5,8 @@ package com.mma.calendar.activities;
  */
 public class Constants {
 
-    public static final String LATITUDE = "latitude";
-    public static final String LONGITUDE = "longitude";
+    public static final String LATITUDE = "lat";
+    public static final String LONGITUDE = "lon";
 
     public static final String ADDRESS = "address";
 }

@@ -77,8 +77,8 @@
             android:layout_alignParentEnd="true" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:text="Add location"
             android:id="@+id/btn_add_location"
             android:background="@drawable/icon_location"
@@ -89,16 +89,15 @@
             android:layout_alignParentStart="true" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:text="Add People"
             android:id="@+id/btn_add_user"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="23dp"
             android:background="@drawable/icon_add_user"
-            android:layout_marginLeft="15dp"
             android:layout_below="@+id/btn_add_location"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignLeft="@+id/btn_add_location"
+            android:layout_alignStart="@+id/btn_add_location" />
 
 
         <EditText
@@ -135,19 +134,20 @@
             android:id="@+id/txt_add_location"
             android:layout_toRightOf="@+id/txt_end_date"
             android:layout_above="@+id/btn_add_user"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:hint="Add Location"/>
+            android:hint="Add Location"
+            android:layout_alignRight="@+id/txt_end_time"
+            android:layout_alignEnd="@+id/txt_end_time" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_add_user"
-            android:layout_toRightOf="@+id/txt_start_date"
             android:layout_above="@+id/txt_event_description"
             android:hint="Add Users"
             android:layout_alignRight="@+id/txt_end_time"
-            android:layout_alignEnd="@+id/txt_end_time" />
+            android:layout_alignEnd="@+id/txt_end_time"
+            android:layout_alignLeft="@+id/txt_add_location"
+            android:layout_alignStart="@+id/txt_add_location" />
 
     </RelativeLayout>
 

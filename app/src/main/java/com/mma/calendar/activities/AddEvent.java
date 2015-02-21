@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     public static final int END_DATE_DIALOG = 2;
     public static final int START_TIME_DIALOG = 3;
     public static final int END_TIME_DIALOG = 4;
+    private double lat;
+    private double lon;
+    private String address;
 
 
     @Override
@@ -217,6 +221,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                     event.setEndDate(inputEndDate.getText().toString());
                     event.setStartTime(inputStartTime.getText().toString());
                     event.setEndTime(inputEndTime.getText().toString());
+                    event.setAddress(txtAddLocation.getText().toString());
+                    event.setLat(lat);
+                    event.setLon(lon);
                     event.saveEventually();
 
                     //???
@@ -247,12 +254,14 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         if (resultCode == RESULT_OK) {
-            String lat = data.getStringExtra(Constants.LATITUDE);
-            String lon = data.getStringExtra(Constants.LONGITUDE);
-            String address = data.getStringExtra(Constants.ADDRESS);
+            lat = data.getDoubleExtra(Constants.LATITUDE, 0.);
+            lon = data.getDoubleExtra(Constants.LONGITUDE, 0.);
+            Log.v("##########", "BEFORE");
+
+            Log.v("##########", ""+lat);
+            Log.v("##########", ""+lon);
+            address = data.getStringExtra(Constants.ADDRESS);
             if (address != null) {
                 txtAddLocation.setText(address);
             }

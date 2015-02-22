@@ -56,8 +56,10 @@ public class MapPicker extends FragmentActivity {
         });
 
         String address = getIntent().getExtras().getString(Constants.ADDRESS);
-        searchAddress(address);
-
+        if (address != null) {
+            search.setText(address);
+            searchAddress(address);
+        }
 
     }
 
@@ -146,4 +148,6 @@ public class MapPicker extends FragmentActivity {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng).title("test 1 "));
     }
+
+
 }

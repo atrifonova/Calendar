@@ -60,12 +60,11 @@
          android:layout_height="1dp"
          android:background="@drawable/horizontal_line_with_gradient"/>
 
-    <TextView
-        android:id="@+id/txt_event_title"
+    <ListView
+        android:id="@+id/list_event_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="5dp"
-        android:text="Some text ..."/>
+        android:layout_height="wrap_content">
+
+        </ListView>
 
 </LinearLayout>

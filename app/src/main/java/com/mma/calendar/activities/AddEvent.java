@@ -1,7 +1,9 @@
 package com.mma.calendar.activities;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +21,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
+import com.mma.calendar.services.CalendarReceiver;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
@@ -36,7 +38,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-    private RobotoCalendarView robotoCalendarView;
+    private PendingIntent pendingIntent;
 
     private EditText inputTitle;
     private EditText inputDescription;
@@ -243,8 +245,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                     event.setLon(lon);
                     event.saveEventually();
 
-                    //???
-                    //robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, theDate);
+                    setNotification();
 
                     Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
                     startActivity(intent);
@@ -269,6 +270,26 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
+    private void setNotification() {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        Calendar calendar =  Calendar.getInstance();
+
+        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.YEAR, 2015);
+        calendar.set(Calendar.DAY_OF_MONTH, 22);
+
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 55);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.AM_PM,Calendar.PM);
+
+        long when = calendar.getTimeInMillis();         // notification time
+        Intent intent = new Intent(this, CalendarReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
+
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -276,8 +297,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             lon = data.getDoubleExtra(Constants.LONGITUDE, 0.);
             Log.v("##########", "BEFORE");
 
-            Log.v("##########", ""+lat);
-            Log.v("##########", ""+lon);
+            Log.v("##########", "" + lat);
+            Log.v("##########", "" + lon);
             address = data.getStringExtra(Constants.ADDRESS);
             if (address != null) {
                 txtAddLocation.setText(address);

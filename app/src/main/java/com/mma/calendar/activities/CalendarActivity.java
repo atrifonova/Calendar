@@ -1,22 +1,32 @@
 package com.mma.calendar.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -28,6 +38,15 @@ public class CalendarActivity extends ActionBarActivity
     private Calendar currentCalendar;
     private Locale locale;
 
+    SharedPreferences sharedPreferences = null;
+    long getDate;
+    private String currentDateFormat;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> listOfTitles = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +84,9 @@ public class CalendarActivity extends ActionBarActivity
             finish();
         }
 
+        sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
+        listView = (ListView) findViewById(R.id.list_event_title);
+
     }
 
     @Override
@@ -100,7 +122,35 @@ public class CalendarActivity extends ActionBarActivity
     public void onDateSelected(Date date) {
 
         robotoCalendarView.markDayAsSelectedDay(date);
+        showEvents(date);
 
+    }
+
+    private void showEvents(Date date) {
+
+        getDate = sharedPreferences.getLong("KEY", 0L);
+        date = new Date(getDate);
+        currentDateFormat = dateFormat.format(date);
+
+        adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1);
+
+        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+        query.whereEqualTo("startDate", currentDateFormat);
+        query.setLimit(3);
+        query.findInBackground(new FindCallback<Event>() {
+            @Override
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        adapter.add(event.getStartTime() + " - " + event.getEndTime() + " " + event.getTitle());
+                    }
+                } else {
+                    adapter.add("");
+                }
+            }
+        });
+
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -120,4 +170,6 @@ public class CalendarActivity extends ActionBarActivity
         currentCalendar.add(Calendar.MONTH, currentMonthIndex);
         robotoCalendarView.initializeCalendar(currentCalendar);
     }
+
+
 }

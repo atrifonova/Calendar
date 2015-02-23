@@ -27,8 +27,7 @@ import java.util.Locale;
 /**
  * Created by skuller on 2/18/15.
  */
-public class MapPicker
-        extends FragmentActivity
+public class MapPicker extends FragmentActivity
 {
     private Button searchButton;
     private Button getLocation;

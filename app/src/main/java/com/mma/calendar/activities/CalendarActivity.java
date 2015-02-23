@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -184,13 +183,12 @@ public class CalendarActivity extends ActionBarActivity
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
-                        //exception
                         try {
                             Date date = dateFormat.parse(event.getStartDate());
+                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
                         } catch (java.text.ParseException e1) {
                             e1.printStackTrace();
                         }
-                        Log.d("User", event.getStartDate());
                     }
                 }
             }

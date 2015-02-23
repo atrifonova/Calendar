@@ -65,8 +65,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private String currentDateFormat;
     private Date theDate;
 
+
     private int hour;
     private int minutes;
+    private boolean isDateValid;
 
     private ImageButton btn_add_location;
     private ImageView btn_add_users;
@@ -79,11 +81,22 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private double lon;
     private String address;
 
+    private Date startDate;
+    private Date endDate;
+
+    private int startMinutes;
+    private int startHour;
+
+    private int endMinutes;
+    private int endHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        startDate = new Date();
+        endDate = new Date();
 
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
@@ -174,10 +187,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 dialog = new DatePickerDialog(this, datePickerListenerEndDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
                 break;
             case START_TIME_DIALOG:
-                dialog = new TimePickerDialog(this, startTimePickerListener, hour, minutes,false);
+                dialog = new TimePickerDialog(this, startTimePickerListener, hour, minutes, true);
                 break;
             case END_TIME_DIALOG:
-                dialog = new TimePickerDialog(this, endTimePickerListener, hour, minutes,false);
+                dialog = new TimePickerDialog(this, endTimePickerListener, hour, minutes, true);
                 break;
         }
 
@@ -188,52 +201,68 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
 
-            String startDate = selectedDay + "." + ( selectedMonth + 1 ) + "." + selectedYear;
+            String startDateString = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
 
             try {
-                Date date = formatter.parse(startDate);
-                startDate = dateFormat.format(date);
+                startDate = formatter.parse(startDateString);
+                startDate.setHours(startHour);
+                startDate.setMinutes(startMinutes);
+                startDateString = dateFormat.format(startDate);
+
             } catch (ParseException e) {
                 e.printStackTrace();
             } finally {
-                inputStartDate.setText(startDate);
+                inputStartDate.setText(startDateString);
             }
+
+            validateDate();
         }
     };
 
     private DatePickerDialog.OnDateSetListener datePickerListenerEndDate = new DatePickerDialog.OnDateSetListener() {
 
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-            String endDate = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
+            String endDateString = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
 
             try {
-                Date date = formatter.parse(endDate);
-                endDate = dateFormat.format(date);
+                endDate = formatter.parse(endDateString);
+                endDateString = dateFormat.format(endDate);
+                endDate.setHours(endHour);
+                endDate.setMinutes(endMinutes);
             } catch (ParseException e) {
                 e.printStackTrace();
             } finally {
-                inputEndDate.setText(endDate);
+                inputEndDate.setText(endDateString);
             }
+            validateDate();
         }
     };
 
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            hour = hourOfDay;
-            minutes = minute;
+            startHour = hourOfDay;
+            startMinutes = minute;
 
-            inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minute)));
+            inputStartTime.setText(new StringBuilder().append(paddingString(startHour)).append(":").append(paddingString(startMinutes)));
+            startDate.setHours(startHour);
+            startDate.setMinutes(startMinutes);
+
+            validateDate();
         }
     };
 
     private TimePickerDialog.OnTimeSetListener endTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            hour = hourOfDay;
-            minutes = minute;
+            endHour = hourOfDay;
+            endMinutes = minute;
 
-            inputEndTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minute)));
+            inputEndTime.setText(new StringBuilder().append(paddingString(endHour)).append(":").append(paddingString(endMinutes)));
+            endDate.setHours(endHour);
+            endDate.setMinutes(endMinutes);
+
+            validateDate();
         }
     };
 
@@ -243,25 +272,29 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btn_create_event:
                 if (inputTitle.getText().length() > 0) {
-                    Event event = new Event();
-                    event.setACL(new ParseACL(ParseUser.getCurrentUser()));
-                    event.setUser(ParseUser.getCurrentUser());
-                    event.setTitle(inputTitle.getText().toString());
-                    event.setDescription(inputDescription.getText().toString());
-                    event.setStartDate(inputStartDate.getText().toString());
-                    event.setEndDate(inputEndDate.getText().toString());
-                    event.setStartTime(inputStartTime.getText().toString());
-                    event.setEndTime(inputEndTime.getText().toString());
-                    event.setAddress(txtAddLocation.getText().toString());
-                    event.setLat(lat);
-                    event.setLon(lon);
-                    event.saveEventually();
 
-                    setNotification();
+                    if (isDateValid) {
+                        Event event = new Event();
+                        event.setACL(new ParseACL(ParseUser.getCurrentUser()));
+                        event.setUser(ParseUser.getCurrentUser());
+                        event.setTitle(inputTitle.getText().toString());
+                        event.setDescription(inputDescription.getText().toString());
+                        event.setStartDate(inputStartDate.getText().toString());
+                        event.setEndDate(inputEndDate.getText().toString());
+                        event.setStartTime(inputStartTime.getText().toString());
+                        event.setEndTime(inputEndTime.getText().toString());
+                        event.setAddress(txtAddLocation.getText().toString());
+                        event.setLat(lat);
+                        event.setLon(lon);
+                        event.saveEventually();
 
-                    Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
-                    startActivity(intent);
+                        setNotification();
 
+                        Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(AddEvent.this, "End date is before start date!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 }
             case R.id.btn_add_location:
@@ -359,4 +392,22 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         }
 
     }//onActivityResult
+
+
+    private boolean validateDate() {
+        if (startDate == null || endDate == null) {
+            isDateValid = false;
+        } else {
+            long startTime = startDate.getTime();
+            long endTime = endDate.getTime();
+            if (startTime > endTime) {
+                // Toast.makeText(AddEvent.this, "NOT VALID DATE", Toast.LENGTH_SHORT).show();
+                isDateValid = false;
+            } else {
+                // Toast.makeText(AddEvent.this, "VALID DATE", Toast.LENGTH_SHORT).show();
+                isDateValid = true;
+            }
+        }
+        return isDateValid;
+    }
 }

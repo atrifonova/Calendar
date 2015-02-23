@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -23,7 +24,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +46,6 @@ public class CalendarActivity extends ActionBarActivity
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> listOfTitles = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +85,9 @@ public class CalendarActivity extends ActionBarActivity
 
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
         listView = (ListView) findViewById(R.id.list_event_title);
+
+        setDateStyle();
+        showEvents(new Date(System.currentTimeMillis()));
 
     }
 
@@ -132,23 +134,26 @@ public class CalendarActivity extends ActionBarActivity
         date = new Date(getDate);
         currentDateFormat = dateFormat.format(date);
 
+
         adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1);
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);
-        query.setLimit(3);
+        final Date finalDate = date;
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
                         adapter.add(event.getStartTime() + " - " + event.getEndTime() + " " + event.getTitle());
+                        //robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, finalDate);
                     }
                 } else {
                     adapter.add("");
                 }
             }
         });
+
 
         listView.setAdapter(adapter);
     }
@@ -171,5 +176,25 @@ public class CalendarActivity extends ActionBarActivity
         robotoCalendarView.initializeCalendar(currentCalendar);
     }
 
+    private void setDateStyle () {
+        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<Event>() {
+            @Override
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        //exception
+                        try {
+                            Date date = dateFormat.parse(event.getStartDate());
+                        } catch (java.text.ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                        Log.d("User", event.getStartDate());
+                    }
+                }
+            }
+        });
 
+    }
 }

@@ -1,11 +1,13 @@
 package com.mma.calendar.activities;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -269,22 +272,45 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_add_user:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
+                builder.setIcon(R.drawable.ic_launcher);
+                builder.setTitle("Select User");
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);
+
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> users, com.parse.ParseException e) {
                         if (e == null) {
                             for (ParseUser user : users) {
+                                adapter.add(user.getUsername());
                                 Log.d("userName", user.getUsername());
                             }
                         } else {
+                            adapter.add("");
                             Log.d("USER", "NOT FOUND");
                         }
                     }
                 });
-                //SELECT userName
-                //FROM User
-                Toast.makeText(AddEvent.this, "sasa", Toast.LENGTH_LONG).show();
+
+                builder.setAdapter(adapter, null)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(AddEvent.this, "Selected", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                builder.create().show();
+
                 break;
         }
     }

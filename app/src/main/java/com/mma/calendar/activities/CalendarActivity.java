@@ -138,14 +138,12 @@ public class CalendarActivity extends ActionBarActivity
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);
-        final Date finalDate = date;
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
                         adapter.add(event.getStartTime() + " - " + event.getEndTime() + " " + event.getTitle());
-                        //robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, finalDate);
                     }
                 } else {
                     adapter.add("");

@@ -18,13 +18,17 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
 import com.mma.calendar.services.CalendarReceiver;
+import com.parse.FindCallback;
 import com.parse.ParseACL;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.DateFormat;
@@ -32,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddEvent extends ActionBarActivity implements View.OnClickListener {
 
@@ -61,6 +66,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private int minutes;
 
     private ImageButton btn_add_location;
+    private ImageView btn_add_users;
 
     public static final int START_DATE_DIALOG = 1;
     public static final int END_DATE_DIALOG = 2;
@@ -112,6 +118,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
         btn_add_location = (ImageButton) findViewById(R.id.btn_add_location);
         btn_add_location.setOnClickListener(this);
+
+        btn_add_users = (ImageView) findViewById(R.id.btn_add_user);
+        btn_add_users.setOnClickListener(this);
 
         txtAddLocation = (EditText) findViewById(R.id.txt_add_location);
 
@@ -258,6 +267,24 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 intent.putExtra(Constants.ADDRESS,address);
 
                 startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_add_user:
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> users, com.parse.ParseException e) {
+                        if (e == null) {
+                            for (ParseUser user : users) {
+                                Log.d("userName", user.getUsername());
+                            }
+                        } else {
+                            Log.d("USER", "NOT FOUND");
+                        }
+                    }
+                });
+                //SELECT userName
+                //FROM User
+                Toast.makeText(AddEvent.this, "sasa", Toast.LENGTH_LONG).show();
                 break;
         }
     }

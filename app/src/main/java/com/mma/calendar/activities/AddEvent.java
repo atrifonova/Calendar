@@ -16,12 +16,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -55,6 +58,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TextView inputEndDate;
     private TextView inputStartTime;
     private TextView inputEndTime;
+    private EditText txtAddUsers;
     private EditText txtAddLocation;
 
     private Button btnCreateEvent;
@@ -89,6 +93,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
     private int endMinutes;
     private int endHour;
+
+    private String result = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +143,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
         btn_add_users = (ImageView) findViewById(R.id.btn_add_user);
         btn_add_users.setOnClickListener(this);
+
+        txtAddUsers = (EditText) findViewById(R.id.txt_add_user);
 
         txtAddLocation = (EditText) findViewById(R.id.txt_add_location);
 
@@ -297,6 +305,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                     }
                     break;
                 }
+
             case R.id.btn_add_location:
                 Intent intent = new Intent(getApplicationContext(), MapPicker.class);
                 String address = txtAddLocation.getText().toString();
@@ -304,47 +313,11 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
                 startActivityForResult(intent, 1);
                 break;
+
             case R.id.btn_add_user:
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
-                builder.setIcon(R.drawable.ic_launcher);
-                builder.setTitle("Select User");
-                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);
-
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> users, com.parse.ParseException e) {
-                        if (e == null) {
-                            for (ParseUser user : users) {
-                                adapter.add(user.getUsername());
-                                Log.d("userName", user.getUsername());
-                            }
-                        } else {
-                            adapter.add("");
-                            Log.d("USER", "NOT FOUND");
-                        }
-                    }
-                });
-
-                builder.setAdapter(adapter, null)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(AddEvent.this, "Selected", Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-
-                builder.create().show();
-
+                showDialog();
                 break;
+
         }
     }
 
@@ -409,5 +382,67 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             }
         }
         return isDateValid;
+    }
+
+    private void showDialog () {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, com.parse.ParseException e) {
+                if (e == null) {
+                    for (ParseUser user : users) {
+                        if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                            adapter.add(user.getUsername());
+                            Log.d("userName", user.getUsername());
+                        }
+                    }
+                } else {
+                    adapter.add("");
+                    Log.d("USER", "NOT FOUND");
+                }
+            }
+        });
+
+        builder.setIcon(R.drawable.ic_launcher)
+                .setTitle("Select User")
+                .setAdapter(adapter, null)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        txtAddUsers.setText(result);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+
+        dialog.getListView().setItemsCanFocus(false);
+        dialog.getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                CheckedTextView textView = (CheckedTextView) view;
+
+                if (textView.isChecked()) {
+                    result = result + textView.getText() + " ";
+                    Toast.makeText(AddEvent.this, result, Toast.LENGTH_LONG).show();
+                } else {
+                    result = "";
+                }
+            }
+        });
+
+        dialog.show();
     }
 }

@@ -107,4 +107,12 @@ public class Event extends ParseObject {
         return getDouble(Constants.LATITUDE);
     }
 
+    public void setInviteUsers(String inviteUsers){
+        put("inviteUsers", inviteUsers);
+    }
+
+    public String getInviteUser(){
+        return getString("inviteUsers");
+    }
+
 }

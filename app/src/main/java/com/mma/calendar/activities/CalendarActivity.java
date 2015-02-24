@@ -210,23 +210,7 @@ public class CalendarActivity extends ActionBarActivity
 
     private void addNotification(Date date, String title, String description) {
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
-
-/*
-        Calendar calendar =  Calendar.getInstance();
-
-        calendar.set(Calendar.MONTH, 1);
-        calendar.set(Calendar.YEAR, 2015);
-        calendar.set(Calendar.DAY_OF_MONTH, 22);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 55);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM,Calendar.PM);
-*/
-//        long when = calendar.getTimeInMillis();         // notification time
-
         long when = date.getTime();
-//        if (when > nowTime) {
         Intent intent = new Intent(this, CalendarReceiver.class);
         intent.putExtra(Constants.TITLE, title);
         intent.putExtra(Constants.DESCRIPTION, description);

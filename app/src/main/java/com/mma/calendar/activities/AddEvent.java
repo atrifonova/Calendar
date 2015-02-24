@@ -39,6 +39,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -89,7 +90,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private int endMinutes;
     private int endHour;
 
-    private String result = "";
+    private ArrayList<String> result = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,6 +298,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                         event.setStartTime(inputStartTime.getText().toString());
                         event.setEndTime(inputEndTime.getText().toString());
                         event.setAddress(txtAddLocation.getText().toString());
+                        event.setInviteUsers(txtAddUsers.getText().toString());
                         event.setLat(lat);
                         event.setLon(lon);
                         event.saveEventually();
@@ -370,6 +372,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         final AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);
 
+        result = new ArrayList<String>();
+
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -394,12 +398,21 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        txtAddUsers.setText(result);
+                        StringBuilder strBuilder = new StringBuilder();
+                        for (String str : result) {
+                            strBuilder.append(str + " , ");
+                        }
+                        String users = strBuilder.toString();
+                        if (users.contains(",")) {
+                            users = users.substring(0, users.lastIndexOf(",")).trim();
+                        }
+                        txtAddUsers.setText(users);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        txtAddUsers.setText("");
                         dialog.dismiss();
                     }
                 });
@@ -414,12 +427,15 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 CheckedTextView textView = (CheckedTextView) view;
-
+                String selectedUser = textView.getText().toString();
                 if (textView.isChecked()) {
-                    result = result + textView.getText() + " ";
-                    Toast.makeText(AddEvent.this, result, Toast.LENGTH_LONG).show();
+                    result.add(selectedUser);
+//                    result = result + textView.getText() + " ";
+//                    Toast.makeText(AddEvent.this, selectedUser, Toast.LENGTH_LONG).show();
                 } else {
-                    result = "";
+                    if (result.contains(selectedUser)) {
+                        result.remove(selectedUser);
+                    }
                 }
             }
         });

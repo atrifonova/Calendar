@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.mma.calendar.R;
 import com.parse.ParseException;
@@ -18,6 +19,7 @@ public class RegistrationActivity extends ActionBarActivity{
     private EditText inputUserName;
     private EditText inputPassword;
     private EditText inputEmail;
+    private TextView errorField;
 
     private ImageButton profileImage;
 
@@ -36,6 +38,7 @@ public class RegistrationActivity extends ActionBarActivity{
         inputUserName = (EditText) findViewById(R.id.txt_user_name_registration);
         inputPassword = (EditText) findViewById(R.id.txt_user_password_registration);
         inputEmail = (EditText) findViewById(R.id.txt_email);
+        errorField = (TextView) findViewById(R.id.txt_error_messages);
 
     }
 
@@ -61,6 +64,7 @@ public class RegistrationActivity extends ActionBarActivity{
         user.setUsername(inputUserName.getText().toString());
         user.setPassword(inputPassword.getText().toString());
         user.setEmail(inputEmail.getText().toString());
+        errorField.setText("");
 
         user.signUpInBackground(new SignUpCallback() {
             @Override
@@ -69,6 +73,23 @@ public class RegistrationActivity extends ActionBarActivity{
                     Intent intent = new Intent(RegistrationActivity.this, CalendarActivity.class);
                     startActivity(intent);
                     finish();
+                } else {
+                    // Sign up didn't succeed. Look at the ParseException
+                    // to figure out what went wrong
+                    switch(e.getCode()){
+                        case ParseException.USERNAME_TAKEN:
+                            errorField.setText("Sorry, this username has already been taken.");
+                            break;
+                        case ParseException.USERNAME_MISSING:
+                            errorField.setText("Sorry, you must supply a username to register.");
+                            break;
+                        case ParseException.PASSWORD_MISSING:
+                            errorField.setText("Sorry, you must supply a password to register.");
+                            break;
+                        default:
+                            errorField.setText(e.getLocalizedMessage());
+                    }
+                    v.setEnabled(true);
                 }
             }
         });

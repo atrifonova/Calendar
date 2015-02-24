@@ -8,18 +8,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mma.calendar.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class LoginActivity extends ActionBarActivity implements View.OnClickListener{
-
-    final private static int DIALOG_LOGIN = 1;
+public class LoginActivity extends ActionBarActivity {
 
     private EditText inputUserName;
     private EditText inputPassword;
+    private TextView errorField;
 
     private Button loginButton;
     private Button createRegistration;
@@ -36,12 +36,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         inputUserName = (EditText) findViewById(R.id.txt_user_name_login);
         inputPassword = (EditText) findViewById(R.id.txt_user_password_login);
+        errorField = (TextView) findViewById(R.id.txt_error_messages_login);
 
         loginButton = (Button) findViewById(R.id.btn_log_in);
-        loginButton.setOnClickListener(LoginActivity.this);
 
         createRegistration = (Button) findViewById(R.id.btn_create_registration);
-        createRegistration.setOnClickListener(LoginActivity.this);
+
     }
 
 
@@ -67,26 +67,43 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_log_in:
-                v.setEnabled(false);
-                ParseUser.logInInBackground(inputUserName.getText().toString(), inputPassword.getText().toString(), new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, ParseException e) {
-                        if (user != null) {
-                            Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
+    public void signIn(final View v){
+        v.setEnabled(false);
+        ParseUser.logInInBackground(inputUserName.getText().toString(), inputPassword.getText().toString(), new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    Intent intent = new Intent(LoginActivity.this, CalendarActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // Signup failed. Look at the ParseException to see what happened.
+                    switch (e.getCode()) {
+                        case ParseException.USERNAME_TAKEN:
+                            errorField.setText("Sorry, this username has already been taken.");
+                            break;
+                        case ParseException.USERNAME_MISSING:
+                            errorField.setText("Sorry, you must supply a username to register.");
+                            break;
+                        case ParseException.PASSWORD_MISSING:
+                            errorField.setText("Sorry, you must supply a password to register.");
+                            break;
+                        case ParseException.OBJECT_NOT_FOUND:
+                            errorField.setText("Sorry, those credentials were invalid.");
+                            break;
+                        default:
+                            errorField.setText(e.getLocalizedMessage());
+                            break;
                     }
-                });
-                break;
-            case R.id.btn_create_registration:
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                startActivity(intent);
-                break;
-        }
+                    v.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    public void showRegistration(View v) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

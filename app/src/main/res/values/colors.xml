@@ -16,4 +16,6 @@
     <color name="currentDayOfMonthColor">#33b5e5</color>
     <color name="currentDayOfMonthSelectorColor">#33b5e5</color>
 
+    <color name="red">#FFFF0000</color>
+
 </resources>

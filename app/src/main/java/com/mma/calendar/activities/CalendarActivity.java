@@ -195,7 +195,7 @@ public class CalendarActivity extends ActionBarActivity
                             long nowTime = now.getTime();
                             long eventTime = date.getTime();
                             if (nowTime < eventTime) {
-                                addNotification(date, event.getTitle(),event.getDescription());
+                                addNotification(date, event);
                             }
                         } catch (java.text.ParseException e1) {
                             e1.printStackTrace();

@@ -28,9 +28,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.disegnator.robotocalendar.font.CustomTimePickerDialog;
+import com.mma.calendar.pickers.CustomTimePickerDialog;
 import com.mma.calendar.R;
+import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
+import com.mma.calendar.pickers.MapPicker;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseQuery;
@@ -130,19 +132,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         inputEndDate = (TextView) findViewById(R.id.txt_end_date);
         inputEndDate.setText(currentDateFormat);
 
-
-        if (minutes % TIME_PICKER_INTERVAL != 0) {
-            int minuteFloor = minutes - (minutes % TIME_PICKER_INTERVAL);
-            minutes = minuteFloor + (minutes == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
-            if (minutes == 60) {
-                minutes = 0;
-            }
-
-        }
-
         inputStartTime = (TextView) findViewById(R.id.txt_start_time);
         inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(minutes));
-
 
         inputEndTime = (TextView) findViewById(R.id.txt_end_time);
         inputEndTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minutes)));

@@ -1,4 +1,4 @@
-package com.mma.calendar.activities;
+package com.mma.calendar.constants;
 
 /**
  * Created by skuller on 2/21/15.

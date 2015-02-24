@@ -1,6 +1,6 @@
 package com.mma.calendar.model;
 
-import com.mma.calendar.activities.Constants;
+import com.mma.calendar.constants.Constants;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;

@@ -27,7 +27,7 @@ public class NotificationDetails extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_details);
-
+        init();
         showDetails();
     }
 
@@ -69,9 +69,11 @@ public class NotificationDetails extends ActionBarActivity {
         Intent intent = getIntent();
         String getEventID = intent.getStringExtra(Constants.OBJECT_ID);
 
+        adapter = new ArrayAdapter<String>(NotificationDetails.this, android.R.layout.simple_expandable_list_item_1);
+
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.whereEqualTo(Constants.OBJECT_ID, getEventID);
+        query.whereEqualTo("objectId", getEventID);
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {

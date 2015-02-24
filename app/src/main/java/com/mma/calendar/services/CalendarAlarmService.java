@@ -35,6 +35,7 @@ public class CalendarAlarmService extends Service {
         String title = null;
         String description = null;
         String objectId = null;
+
         Bundle bundle = newIntent.getExtras();
         if (bundle != null) {
             title = bundle.getString(Constants.TITLE);
@@ -55,6 +56,7 @@ public class CalendarAlarmService extends Service {
 
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), NotificationDetails.class);
+        intent.putExtra(Constants.OBJECT_ID, objectId);
 
         Notification notification = new Notification(R.drawable.ic_launcher, description, System.currentTimeMillis());
 

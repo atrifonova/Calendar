@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.mma.calendar.R;
-import com.mma.calendar.activities.CalendarActivity;
+import com.mma.calendar.activities.NotificationDetails;
 import com.mma.calendar.constants.Constants;
 
 public class CalendarAlarmService extends Service {
@@ -54,7 +54,7 @@ public class CalendarAlarmService extends Service {
         }
 
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
-        Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class); // TODO: open another activity !!!!
+        Intent intent = new Intent(this.getApplicationContext(), NotificationDetails.class); // TODO: open another activity !!!!
 
         Notification notification = new Notification(R.drawable.ic_launcher, description, System.currentTimeMillis());
 

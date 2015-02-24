@@ -16,5 +16,6 @@
     <string name="title_activity_add_event">AddEvent</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_notification_details">NotificationDetails</string>
 
 </resources>

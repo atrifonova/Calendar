@@ -3,7 +3,6 @@ package com.mma.calendar.activities;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.CustomTimePickerDialog;
+import com.disegnator.robotocalendar.font.CustomTimePickerDialog;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
 import com.parse.FindCallback;
@@ -47,9 +46,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
     private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static final int TIME_PICKER_INTERVAL = 10;
-
-    private PendingIntent pendingIntent;
+    private static final int TIME_PICKER_INTERVAL = 5;
 
     private EditText inputTitle;
     private EditText inputDescription;
@@ -67,7 +64,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     long getDate;
 
     private String currentDateFormat;
-    private Date theDate;
 
 
     private int hour;
@@ -101,9 +97,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        startDate = new Date();
-        endDate = new Date();
-
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
         init();
@@ -113,8 +106,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private void init() {
 
         getDate = sharedPreferences.getLong("KEY", 0L);
-        theDate = new Date(getDate);
-        currentDateFormat = dateFormat.format(theDate);
+        startDate = new Date(getDate);
+        endDate = new Date(getDate);
+        currentDateFormat = dateFormat.format(startDate);
 
         final Calendar calendar = Calendar.getInstance();
         hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -196,14 +190,14 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         showDialog(4);
     }
 
-    protected Dialog onCreateDialog (int id) {
+    protected Dialog onCreateDialog(int id) {
         Dialog dialog = null;
         switch (id) {
             case START_DATE_DIALOG:
-                dialog = new DatePickerDialog(this, datePickerListenerStartDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
+                dialog = new DatePickerDialog(this, datePickerListenerStartDate, startDate.getYear() + 1900, startDate.getMonth(), startDate.getDate());
                 break;
             case END_DATE_DIALOG:
-                dialog = new DatePickerDialog(this, datePickerListenerEndDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
+                dialog = new DatePickerDialog(this, datePickerListenerEndDate, endDate.getYear() + 1900, endDate.getMonth(), endDate.getDate());
                 break;
             case START_TIME_DIALOG:
                 dialog = new CustomTimePickerDialog(this, startTimePickerListener, hour, minutes, true);
@@ -233,8 +227,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             } finally {
                 inputStartDate.setText(startDateString);
             }
-
-            validateDate();
         }
     };
 
@@ -243,24 +235,27 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
             String endDateString = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
 
-            try {
-                endDate = formatter.parse(endDateString);
-                endDateString = dateFormat.format(endDate);
-                endDate.setHours(endHour);
-                endDate.setMinutes(endMinutes);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } finally {
-                inputEndDate.setText(endDateString);
+            if (validateDate()) {
+                try {
+                    endDate = formatter.parse(endDateString);
+                    endDateString = dateFormat.format(endDate);
+                    endDate.setHours(endHour);
+                    endDate.setMinutes(endMinutes);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } finally {
+                    inputEndDate.setText(endDateString);
+                }
+            } else {
+                inputEndDate.setText(currentDateFormat);
             }
-            validateDate();
+
         }
     };
 
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            //NumberPicker minuteSpinner = view.findViewById(fie)
             startHour = hourOfDay;
             startMinutes = minute;
 
@@ -319,7 +314,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             case R.id.btn_add_location:
                 Intent intent = new Intent(getApplicationContext(), MapPicker.class);
                 String address = txtAddLocation.getText().toString();
-                intent.putExtra(Constants.ADDRESS,address);
+                intent.putExtra(Constants.ADDRESS, address);
 
                 startActivityForResult(intent, 1);
                 break;
@@ -331,7 +326,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
-    private String paddingString (int c) {
+    private String paddingString(int c) {
         if (c >= 10) {
             return String.valueOf(c);
         } else {
@@ -361,20 +356,18 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         if (startDate == null || endDate == null) {
             isDateValid = false;
         } else {
-            long startTime = startDate.getTime();
-            long endTime = endDate.getTime();
-            if (startTime > endTime) {
-                // Toast.makeText(AddEvent.this, "NOT VALID DATE", Toast.LENGTH_SHORT).show();
+
+            if (endDate.before(startDate)) {
+                Toast.makeText(AddEvent.this, "NOT VALID DATE", Toast.LENGTH_SHORT).show();
                 isDateValid = false;
             } else {
-                // Toast.makeText(AddEvent.this, "VALID DATE", Toast.LENGTH_SHORT).show();
                 isDateValid = true;
             }
         }
         return isDateValid;
     }
 
-    private void showDialog () {
+    private void showDialog() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);

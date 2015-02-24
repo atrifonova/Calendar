@@ -91,9 +91,6 @@ public class LoginActivity extends ActionBarActivity {
                         case ParseException.OBJECT_NOT_FOUND:
                             errorField.setText("Sorry, those credentials were invalid.");
                             break;
-                        default:
-                            errorField.setText(e.getLocalizedMessage());
-                            break;
                     }
                     v.setEnabled(true);
                 }

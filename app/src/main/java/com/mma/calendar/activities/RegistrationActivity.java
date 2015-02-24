@@ -86,8 +86,6 @@ public class RegistrationActivity extends ActionBarActivity{
                         case ParseException.PASSWORD_MISSING:
                             errorField.setText("Sorry, you must supply a password to register.");
                             break;
-                        default:
-                            errorField.setText(e.getLocalizedMessage());
                     }
                     v.setEnabled(true);
                 }

@@ -1,4 +1,4 @@
-package com;
+package com.disegnator.robotocalendar.font;
 
 import android.app.TimePickerDialog;
 import android.content.Context;

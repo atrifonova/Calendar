@@ -5,6 +5,9 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Toni on 04-Feb-15.
  */
@@ -109,10 +112,24 @@ public class Event extends ParseObject {
 
     public void setInviteUsers(String inviteUsers){
         put("inviteUsers", inviteUsers);
+        setUsersList(inviteUsers);
+
+    }
+
+    public void setUsersList(String inviteUsers){
+        List<String> arr = new ArrayList<String>();
+        for (String s : inviteUsers.split(",")) {
+            arr.add(s);
+        }
+        put("usersList", arr);
+
     }
 
     public String getInviteUser(){
         return getString("inviteUsers");
     }
 
+    public List<String> getUsersList() {
+        return getList("usersList");
+    }
 }

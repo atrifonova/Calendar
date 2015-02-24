@@ -26,6 +26,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -210,8 +212,14 @@ public class CalendarActivity extends ActionBarActivity
     }
 
     private void findInvitedEvents() {
+//        String username = ParseUser.getCurrentUser().getUsername();
+        List<String> user = new ArrayList<String>();
+        user.add(ParseUser.getCurrentUser().getUsername());
+        user.add("test");
+        user.add("atrifonova");
+
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        query.whereContains("inviteUsers", "lengarski");
+        query.whereContainedIn("usersList", Arrays.asList(new String[]{"lengarski", "test"}));
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -222,7 +230,7 @@ public class CalendarActivity extends ActionBarActivity
                             String startTime = event.getStartTime();
                             int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
                             int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
-                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
+                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.GREEN_CIRCLE, date);
                             date.setHours(hour);
                             date.setMinutes(minutes);
                             Date now = new Date();

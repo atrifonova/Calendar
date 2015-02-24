@@ -30,7 +30,7 @@ public class CalendarAlarmService extends Service {
     @Override
     public void onStart(Intent newIntent, int startId) {
         super.onStart(newIntent, startId);
-String title = newIntent.getExtras().getString("title");
+        String title = newIntent.getExtras().getString("title");
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class);
 

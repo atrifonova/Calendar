@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
+import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
 import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
@@ -25,7 +26,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +43,6 @@ public class CalendarActivity extends ActionBarActivity
     SharedPreferences sharedPreferences = null;
     long getDate;
     private String currentDateFormat;
-
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -134,13 +132,14 @@ public class CalendarActivity extends ActionBarActivity
 
         getDate = sharedPreferences.getLong("KEY", 0L);
         date = new Date(getDate);
-        currentDateFormat = dateFormat.format(date);
+        currentDateFormat = Constants.dateFormat.format(date);
 
 
         adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1);
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);
+        query.addDescendingOrder("startDate");
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -185,7 +184,7 @@ public class CalendarActivity extends ActionBarActivity
                 if (e == null) {
                     for (Event event : events) {
                         try {
-                            Date date = dateFormat.parse(event.getStartDate());
+                            Date date = Constants.dateFormat.parse(event.getStartDate());
                             String startTime = event.getStartTime();
                             int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
                             int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));

@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
+import com.mma.calendar.constants.Constants;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +17,12 @@ import java.util.List;
  */
 public class CustomTimePickerDialog extends TimePickerDialog {
 
-    private final static int TIME_PICKER_INTERVAL = 10;
     private TimePicker timePicker;
     private final OnTimeSetListener callback;
 
     public CustomTimePickerDialog(Context context, OnTimeSetListener callBack,
                                   int hourOfDay, int minute, boolean is24HourView) {
-        super(context, callBack, hourOfDay, minute / TIME_PICKER_INTERVAL,
+        super(context, callBack, hourOfDay, minute / Constants.TIME_PICKER_INTERVAL,
                 is24HourView);
         this.callback = callBack;
     }
@@ -31,7 +32,7 @@ public class CustomTimePickerDialog extends TimePickerDialog {
         if (callback != null && timePicker != null) {
             timePicker.clearFocus();
             callback.onTimeSet(timePicker, timePicker.getCurrentHour(),
-                    timePicker.getCurrentMinute() * TIME_PICKER_INTERVAL);
+                    timePicker.getCurrentMinute() * Constants.TIME_PICKER_INTERVAL);
         }
     }
 
@@ -52,9 +53,9 @@ public class CustomTimePickerDialog extends TimePickerDialog {
             NumberPicker mMinuteSpinner = (NumberPicker) timePicker
                     .findViewById(field.getInt(null));
             mMinuteSpinner.setMinValue(0);
-            mMinuteSpinner.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
+            mMinuteSpinner.setMaxValue((60 / Constants.TIME_PICKER_INTERVAL) - 1);
             List<String> displayedValues = new ArrayList<String>();
-            for (int i = 0; i < 60; i += TIME_PICKER_INTERVAL) {
+            for (int i = 0; i < 60; i += Constants.TIME_PICKER_INTERVAL) {
                 displayedValues.add(String.format("%02d", i));
             }
             mMinuteSpinner.setDisplayedValues(displayedValues

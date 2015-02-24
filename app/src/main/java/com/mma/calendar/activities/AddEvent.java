@@ -28,28 +28,22 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.mma.calendar.pickers.CustomTimePickerDialog;
 import com.mma.calendar.R;
 import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
+import com.mma.calendar.pickers.CustomTimePickerDialog;
 import com.mma.calendar.pickers.MapPicker;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class AddEvent extends ActionBarActivity implements View.OnClickListener {
-
-    private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static final int TIME_PICKER_INTERVAL = 5;
 
     private PendingIntent pendingIntent;
 
@@ -69,7 +63,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     long getDate;
 
     private String currentDateFormat;
-    private Date theDate;
 
 
     private int hour;
@@ -117,7 +110,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         getDate = sharedPreferences.getLong("KEY", 0L);
         startDate = new Date(getDate);
         endDate = new Date(getDate);
-        currentDateFormat = dateFormat.format(startDate);
+        currentDateFormat = Constants.dateFormat.format(startDate);
 
         final Calendar calendar = Calendar.getInstance();
         hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -215,10 +208,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             String startDateString = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
 
             try {
-                startDate = formatter.parse(startDateString);
+                startDate = Constants.formatter.parse(startDateString);
                 startDate.setHours(startHour);
                 startDate.setMinutes(startMinutes);
-                startDateString = dateFormat.format(startDate);
+                startDateString = Constants.dateFormat.format(startDate);
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -237,8 +230,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
             if (validateDate()) {
                 try {
-                    endDate = formatter.parse(endDateString);
-                    endDateString = dateFormat.format(endDate);
+                    endDate = Constants.formatter.parse(endDateString);
+                    endDateString = Constants.dateFormat.format(endDate);
                     endDate.setHours(endHour);
                     endDate.setMinutes(endMinutes);
                 } catch (ParseException e) {

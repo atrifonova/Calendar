@@ -264,9 +264,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             startDate.setHours(startHour);
             startDate.setMinutes(startMinutes);
 
-            if (validateDate()) {
+//            if (validateDate()) {
                 inputStartTime.setText(new StringBuilder().append(paddingString(startHour)).append(":").append(paddingString(startMinutes)));
-            }
+//            }
         }
     };
 

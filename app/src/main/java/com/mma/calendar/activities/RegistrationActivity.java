@@ -86,6 +86,12 @@ public class RegistrationActivity extends ActionBarActivity{
                         case ParseException.PASSWORD_MISSING:
                             errorField.setText("Sorry, you must supply a password to register.");
                             break;
+                        case ParseException.EMAIL_MISSING:
+                            errorField.setText("Sorry, you must supply a email to register.");
+                            break;
+                        case ParseException.EMAIL_TAKEN:
+                            errorField.setText("Sorry, this email has already been taken.");
+                            break;
                     }
                     v.setEnabled(true);
                 }

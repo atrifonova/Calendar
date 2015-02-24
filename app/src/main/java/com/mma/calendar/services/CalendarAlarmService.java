@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 
 import com.mma.calendar.R;
@@ -30,7 +31,22 @@ public class CalendarAlarmService extends Service {
     @Override
     public void onStart(Intent newIntent, int startId) {
         super.onStart(newIntent, startId);
-        String title = newIntent.getExtras().getString("title");
+        String title = null;
+        String description = null;
+        Bundle bundle = newIntent.getExtras();
+        if (bundle != null) {
+            title = bundle.getString("title");
+            description = bundle.getString("description");
+        }
+        if (title == null) {
+            title = "";
+        }
+
+        if (description == null) {
+            description = "";
+        }
+
+
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class);
 

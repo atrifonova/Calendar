@@ -195,7 +195,7 @@ public class CalendarActivity extends ActionBarActivity
                             long nowTime = now.getTime();
                             long eventTime = date.getTime();
                             if (nowTime < eventTime) {
-                                addNotification(date, event.getTitle());
+                                addNotification(date, event.getTitle(),event.getDescription());
                             }
                         } catch (java.text.ParseException e1) {
                             e1.printStackTrace();
@@ -208,7 +208,7 @@ public class CalendarActivity extends ActionBarActivity
     }
 
 
-    private void addNotification(Date date, String title) {
+    private void addNotification(Date date, String title, String description) {
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
 
 /*
@@ -229,6 +229,7 @@ public class CalendarActivity extends ActionBarActivity
 //        if (when > nowTime) {
         Intent intent = new Intent(this, CalendarReceiver.class);
         intent.putExtra("title", title);
+        intent.putExtra("description", description);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
         //      }

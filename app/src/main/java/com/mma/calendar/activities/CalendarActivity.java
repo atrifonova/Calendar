@@ -1,6 +1,8 @@
 package com.mma.calendar.activities;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
+import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -183,7 +186,18 @@ public class CalendarActivity extends ActionBarActivity
                     for (Event event : events) {
                         try {
                             Date date = dateFormat.parse(event.getStartDate());
+                            String startTime = event.getStartTime();
+                            int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
+                            int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
                             robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
+                            date.setHours(hour);
+                            date.setMinutes(minutes);
+                            Date now = new Date();
+                            long nowTime = now.getTime();
+                            long eventTime  = date.getTime();
+                            if (nowTime < eventTime) {
+                                addNotification(date, event.getTitle());
+                            }
                         } catch (java.text.ParseException e1) {
                             e1.printStackTrace();
                         }
@@ -192,5 +206,32 @@ public class CalendarActivity extends ActionBarActivity
             }
         });
 
+    }
+
+
+    private void addNotification(Date date, String title) {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+
+/*
+        Calendar calendar =  Calendar.getInstance();
+
+        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.YEAR, 2015);
+        calendar.set(Calendar.DAY_OF_MONTH, 22);
+
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 55);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.AM_PM,Calendar.PM);
+*/
+//        long when = calendar.getTimeInMillis();         // notification time
+
+        long when = date.getTime();
+//        if (when > nowTime) {
+        Intent intent = new Intent(this, CalendarReceiver.class);
+        intent.putExtra("title", title);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
+        //      }
     }
 }

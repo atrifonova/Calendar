@@ -3,6 +3,7 @@ package com.mma.calendar.activities;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.disegnator.robotocalendar.font.CustomTimePickerDialog;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
+import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseQuery;
@@ -48,6 +50,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final int TIME_PICKER_INTERVAL = 5;
 
+    private PendingIntent pendingIntent;
+
     private EditText inputTitle;
     private EditText inputDescription;
 
@@ -64,6 +68,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     long getDate;
 
     private String currentDateFormat;
+    private Date theDate;
 
 
     private int hour;
@@ -96,6 +101,9 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        startDate = new Date();
+        endDate = new Date();
 
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
@@ -227,6 +235,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             } finally {
                 inputStartDate.setText(startDateString);
             }
+
+            validateDate();
         }
     };
 
@@ -303,6 +313,8 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                         event.setLon(lon);
                         event.saveEventually();
 
+                        setNotification();
+
                         Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
                         startActivity(intent);
                     } else {
@@ -322,11 +334,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             case R.id.btn_add_user:
                 showDialog();
                 break;
-
         }
     }
 
-    private String paddingString(int c) {
+    private String paddingString (int c) {
         if (c >= 10) {
             return String.valueOf(c);
         } else {

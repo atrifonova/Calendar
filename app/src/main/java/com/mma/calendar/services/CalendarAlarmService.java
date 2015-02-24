@@ -30,7 +30,7 @@ public class CalendarAlarmService extends Service {
     @Override
     public void onStart(Intent newIntent, int startId) {
         super.onStart(newIntent, startId);
-
+String title = newIntent.getExtras().getString("title");
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class);
 
@@ -40,7 +40,7 @@ public class CalendarAlarmService extends Service {
 
         PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification.setLatestEventInfo(this.getApplicationContext(), "AlarmManagerDemo", "This is a test message!", pendingNotificationIntent);
+        notification.setLatestEventInfo(this.getApplicationContext(), title, "This is a test message!", pendingNotificationIntent);
 
         mManager.notify(0, notification);
     }

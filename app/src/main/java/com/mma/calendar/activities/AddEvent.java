@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.disegnator.robotocalendar.font.CustomTimePickerDialog;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
-import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseQuery;
@@ -266,14 +265,17 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+
             startHour = hourOfDay;
             startMinutes = minute;
 
-            inputStartTime.setText(new StringBuilder().append(paddingString(startHour)).append(":").append(paddingString(startMinutes)));
             startDate.setHours(startHour);
             startDate.setMinutes(startMinutes);
 
-            validateDate();
+            if (validateDate()) {
+                inputStartTime.setText(new StringBuilder().append(paddingString(startHour)).append(":").append(paddingString(startMinutes)));
+            }
         }
     };
 
@@ -283,11 +285,13 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
             endHour = hourOfDay;
             endMinutes = minute;
 
-            inputEndTime.setText(new StringBuilder().append(paddingString(endHour)).append(":").append(paddingString(endMinutes)));
             endDate.setHours(endHour);
             endDate.setMinutes(endMinutes);
 
-            validateDate();
+
+            if (validateDate()) {
+                inputEndTime.setText(new StringBuilder().append(paddingString(endHour)).append(":").append(paddingString(endMinutes)));
+            }
         }
     };
 
@@ -313,7 +317,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                         event.setLon(lon);
                         event.saveEventually();
 
-                        setNotification();
 
                         Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
                         startActivity(intent);
@@ -337,7 +340,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
-    private String paddingString (int c) {
+    private String paddingString(int c) {
         if (c >= 10) {
             return String.valueOf(c);
         } else {

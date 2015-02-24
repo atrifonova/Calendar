@@ -79,7 +79,7 @@ public class CalendarActivity extends ActionBarActivity
         ParseObject.registerSubclass(Event.class);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -176,7 +176,7 @@ public class CalendarActivity extends ActionBarActivity
         robotoCalendarView.initializeCalendar(currentCalendar);
     }
 
-    private void setDateStyle () {
+    private void setDateStyle() {
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Event>() {
@@ -194,7 +194,7 @@ public class CalendarActivity extends ActionBarActivity
                             date.setMinutes(minutes);
                             Date now = new Date();
                             long nowTime = now.getTime();
-                            long eventTime  = date.getTime();
+                            long eventTime = date.getTime();
                             if (nowTime < eventTime) {
                                 addNotification(date, event.getTitle());
                             }

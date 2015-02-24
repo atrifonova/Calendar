@@ -1,6 +1,5 @@
 package com.mma.calendar.activities;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -29,9 +28,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.CustomTimePickerDialog;
 import com.mma.calendar.R;
 import com.mma.calendar.model.Event;
-import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseQuery;
@@ -48,6 +47,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
 
     private final DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final int TIME_PICKER_INTERVAL = 10;
 
     private PendingIntent pendingIntent;
 
@@ -129,8 +129,19 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         inputEndDate = (TextView) findViewById(R.id.txt_end_date);
         inputEndDate.setText(currentDateFormat);
 
+
+        if (minutes % TIME_PICKER_INTERVAL != 0) {
+            int minuteFloor = minutes - (minutes % TIME_PICKER_INTERVAL);
+            minutes = minuteFloor + (minutes == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
+            if (minutes == 60) {
+                minutes = 0;
+            }
+
+        }
+
         inputStartTime = (TextView) findViewById(R.id.txt_start_time);
-        inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minutes)));
+        inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(minutes));
+
 
         inputEndTime = (TextView) findViewById(R.id.txt_end_time);
         inputEndTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minutes)));
@@ -195,10 +206,10 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                 dialog = new DatePickerDialog(this, datePickerListenerEndDate, theDate.getYear() + 1900, theDate.getMonth(), theDate.getDate());
                 break;
             case START_TIME_DIALOG:
-                dialog = new TimePickerDialog(this, startTimePickerListener, hour, minutes, true);
+                dialog = new CustomTimePickerDialog(this, startTimePickerListener, hour, minutes, true);
                 break;
             case END_TIME_DIALOG:
-                dialog = new TimePickerDialog(this, endTimePickerListener, hour, minutes, true);
+                dialog = new CustomTimePickerDialog(this, endTimePickerListener, hour, minutes, true);
                 break;
         }
 
@@ -249,6 +260,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            //NumberPicker minuteSpinner = view.findViewById(fie)
             startHour = hourOfDay;
             startMinutes = minute;
 
@@ -296,8 +308,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
                         event.setLon(lon);
                         event.saveEventually();
 
-                        setNotification();
-
                         Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
                         startActivity(intent);
                     } else {
@@ -327,26 +337,6 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         } else {
             return "0" + String.valueOf(c);
         }
-    }
-
-    private void setNotification() {
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
-        Calendar calendar =  Calendar.getInstance();
-
-        calendar.set(Calendar.MONTH, 1);
-        calendar.set(Calendar.YEAR, 2015);
-        calendar.set(Calendar.DAY_OF_MONTH, 22);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 55);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM,Calendar.PM);
-
-        long when = calendar.getTimeInMillis();         // notification time
-        Intent intent = new Intent(this, CalendarReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
-
     }
 
 

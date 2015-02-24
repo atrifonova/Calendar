@@ -34,10 +34,12 @@ public class CalendarAlarmService extends Service {
         super.onStart(newIntent, startId);
         String title = null;
         String description = null;
+        String objectId = null;
         Bundle bundle = newIntent.getExtras();
         if (bundle != null) {
             title = bundle.getString(Constants.TITLE);
             description = bundle.getString(Constants.DESCRIPTION);
+            objectId = bundle.getString(Constants.OBJECT_ID);
         }
         if (title == null) {
             title = "";
@@ -47,6 +49,9 @@ public class CalendarAlarmService extends Service {
             description = "";
         }
 
+        if (objectId == null) {
+            objectId = "";
+        }
 
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class); // TODO: open another activity !!!!

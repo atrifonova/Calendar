@@ -205,17 +205,53 @@ public class CalendarActivity extends ActionBarActivity
             }
         });
 
+        findInvitedEvents();
+
     }
 
+    private void findInvitedEvents() {
+        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+        query.whereContains("inviteUsers", "lengarski");
+        query.findInBackground(new FindCallback<Event>() {
+            @Override
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        try {
+                            Date date = Constants.dateFormat.parse(event.getStartDate());
+                            String startTime = event.getStartTime();
+                            int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
+                            int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
+                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
+                            date.setHours(hour);
+                            date.setMinutes(minutes);
+                            Date now = new Date();
+                            long nowTime = now.getTime();
+                            long eventTime = date.getTime();
+                            if (nowTime < eventTime) {
+                                addNotification(date, event);
+                            }
+                        } catch (java.text.ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-    private void addNotification(Date date, String title, String description) {
+    private void addNotification(Date date, Event event) {
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
         long when = date.getTime();
         Intent intent = new Intent(this, CalendarReceiver.class);
+        String title = event.getTitle();
+        String description = event.getDescription();
+        String objectID = event.getObjectId();
+
         intent.putExtra(Constants.TITLE, title);
         intent.putExtra(Constants.DESCRIPTION, description);
+        intent.putExtra(Constants.OBJECT_ID, objectID);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
-        //      }
     }
 }

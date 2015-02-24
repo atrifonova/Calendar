@@ -10,6 +10,7 @@ import android.os.IBinder;
 
 import com.mma.calendar.R;
 import com.mma.calendar.activities.CalendarActivity;
+import com.mma.calendar.constants.Constants;
 
 public class CalendarAlarmService extends Service {
 
@@ -35,8 +36,8 @@ public class CalendarAlarmService extends Service {
         String description = null;
         Bundle bundle = newIntent.getExtras();
         if (bundle != null) {
-            title = bundle.getString("title");
-            description = bundle.getString("description");
+            title = bundle.getString(Constants.TITLE);
+            description = bundle.getString(Constants.DESCRIPTION);
         }
         if (title == null) {
             title = "";
@@ -50,13 +51,13 @@ public class CalendarAlarmService extends Service {
         mManager = (NotificationManager) this.getApplicationContext().getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getApplicationContext(), CalendarActivity.class);
 
-        Notification notification = new Notification(R.drawable.ic_launcher,"This is a test message!", System.currentTimeMillis());
+        Notification notification = new Notification(R.drawable.ic_launcher, description, System.currentTimeMillis());
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification.setLatestEventInfo(this.getApplicationContext(), title, "This is a test message!", pendingNotificationIntent);
+        notification.setLatestEventInfo(this.getApplicationContext(), title, description, pendingNotificationIntent);
 
         mManager.notify(0, notification);
     }

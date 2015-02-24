@@ -228,8 +228,8 @@ public class CalendarActivity extends ActionBarActivity
         long when = date.getTime();
 //        if (when > nowTime) {
         Intent intent = new Intent(this, CalendarReceiver.class);
-        intent.putExtra("title", title);
-        intent.putExtra("description", description);
+        intent.putExtra(Constants.TITLE, title);
+        intent.putExtra(Constants.DESCRIPTION, description);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
         //      }

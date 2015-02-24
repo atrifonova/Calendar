@@ -17,4 +17,7 @@ public class Constants {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public static final int TIME_PICKER_INTERVAL = 1;
+    public static final String TITLE = "title";
+
+    public static final String DESCRIPTION = "description";
 }

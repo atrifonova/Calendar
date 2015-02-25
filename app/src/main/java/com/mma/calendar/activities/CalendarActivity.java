@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -302,6 +303,45 @@ public class CalendarActivity extends Activity
 
     //get all row from column invite user without current user
     private void getRowInviteUser () {
+
+        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+//        query.whereNotContainedIn("user",   Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
+        //query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<Event>() {
+            @Override
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+
+                        if(event.getInviteUserList() != null && event.getInviteUserList().contains(ParseUser.getCurrentUser())){
+                            Log.d("", "");
+                        }
+
+//                        if(event.getInviteUserList().contains(ParseUser.getCurrentUser())){
+//                           Log.d("", "");
+//                        }
+                        //                       try {
+//                            Date date = Constants.dateFormat.parse(event.getStartDate());
+//                            String startTime = event.getStartTime();
+//                            int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
+//                            int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
+//                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
+//                            date.setHours(hour);
+//                            date.setMinutes(minutes);
+//                            Date now = new Date();
+//                            long nowTime = now.getTime();
+//                            long eventTime = date.getTime();
+//                            if (nowTime < eventTime) {
+//                                addNotification(date, event);
+//                            }
+                        //                       } catch (java.text.ParseException e1) {
+                        //                          e1.printStackTrace();
+                        //                     }
+                    }
+                }
+            }
+        });
+
 
     }
 

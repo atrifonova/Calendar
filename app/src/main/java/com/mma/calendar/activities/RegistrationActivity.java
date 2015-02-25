@@ -16,6 +16,7 @@ import com.mma.calendar.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -33,9 +34,11 @@ public class RegistrationActivity extends Activity {
 
     private final int SELECT_PHOTO = 1;
 
-    private Bitmap image;
+    private Bitmap selectedImage;
     private ByteArrayOutputStream stream = new ByteArrayOutputStream();
     private byte[] bitmapData;
+
+    private boolean isSelectedImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,53 +78,64 @@ public class RegistrationActivity extends Activity {
             return;
 
         v.setEnabled(false);
-        ParseUser user = new ParseUser();
+        final ParseUser user = new ParseUser();
         user.setUsername(inputUserName.getText().toString());
         user.setPassword(inputPassword.getText().toString());
         user.setEmail(inputEmail.getText().toString());
 
-        image = BitmapFactory.decodeResource(RegistrationActivity.this.getResources(), R.drawable.profile_image);
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        bitmapData = stream.toByteArray();
+        if (isSelectedImage) {
+            bitmapData = stream.toByteArray();
+        } else {
+            selectedImage = BitmapFactory.decodeResource(RegistrationActivity.this.getResources(), R.drawable.profile_image);
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            bitmapData = stream.toByteArray();
+        }
 
-        ParseFile imageFile = new ParseFile(bitmapData);
 
-        user.put("userPhoto", imageFile);
-        user.saveInBackground();
 
-        errorField.setText("");
+        final ParseFile imageFile = new ParseFile(bitmapData);
 
-        user.signUpInBackground(new SignUpCallback() {
+        imageFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Intent intent = new Intent(RegistrationActivity.this, CalendarActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
-                    switch(e.getCode()){
-                        case ParseException.USERNAME_TAKEN:
-                            errorField.setText("Sorry, this username has already been taken.");
-                            break;
-                        case ParseException.USERNAME_MISSING:
-                            errorField.setText("Sorry, you must supply a username to register.");
-                            break;
-                        case ParseException.PASSWORD_MISSING:
-                            errorField.setText("Sorry, you must supply a password to register.");
-                            break;
-                        case ParseException.EMAIL_MISSING:
-                            errorField.setText("Sorry, you must supply a email to register.");
-                            break;
-                        case ParseException.EMAIL_TAKEN:
-                            errorField.setText("Sorry, this email has already been taken.");
-                            break;
+                user.put("userPhoto", imageFile);
+
+                errorField.setText("");
+
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Intent intent = new Intent(RegistrationActivity.this, CalendarActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // Sign up didn't succeed. Look at the ParseException
+                            // to figure out what went wrong
+                            switch (e.getCode()) {
+                                case ParseException.USERNAME_TAKEN:
+                                    errorField.setText("Sorry, this username has already been taken.");
+                                    break;
+                                case ParseException.USERNAME_MISSING:
+                                    errorField.setText("Sorry, you must supply a username to register.");
+                                    break;
+                                case ParseException.PASSWORD_MISSING:
+                                    errorField.setText("Sorry, you must supply a password to register.");
+                                    break;
+                                case ParseException.EMAIL_MISSING:
+                                    errorField.setText("Sorry, you must supply a email to register.");
+                                    break;
+                                case ParseException.EMAIL_TAKEN:
+                                    errorField.setText("Sorry, this email has already been taken.");
+                                    break;
+                            }
+                            v.setEnabled(true);
+                        }
                     }
-                    v.setEnabled(true);
-                }
+                });
             }
         });
+
     }
 
     public void uploadImage(final View v) {
@@ -142,10 +156,11 @@ public class RegistrationActivity extends Activity {
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        selectedImage = BitmapFactory.decodeStream(imageStream);
+                        stream = new ByteArrayOutputStream();
                         selectedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                         inputProfileImage.setImageBitmap(selectedImage);
+                        isSelectedImage = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }

@@ -7,6 +7,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +58,11 @@ public class NotificationDetails extends Activity {
         txtEventStartDuration = (TextView) findViewById(R.id.txt_event_details_start);
         txtEventEndDuration = (TextView) findViewById(R.id.txt_event_details_end);
         list = (ListView) findViewById(R.id.list_invited_user);
+
         btnShowLocation = (Button) findViewById(R.id.btn_show_map);
+        Spannable lblButton = new SpannableString(" Show Map");
+        lblButton.setSpan(new ImageSpan(getApplicationContext(), R.drawable.btn_location, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        btnShowLocation.setText(lblButton);
     }
 
 

@@ -4,7 +4,7 @@
 
     <gradient
         android:angle="0"
-        android:centerColor="@color/black"
+        android:centerColor="@color/currentDayOfMonthSelectorColor"
         android:endColor="@color/silver"
         android:startColor="@color/silver" />
 

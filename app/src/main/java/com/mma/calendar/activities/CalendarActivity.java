@@ -46,15 +46,33 @@ public class CalendarActivity extends Activity
     private String currentDateFormat;
 
     private ListView listView;
-    private ArrayAdapter<String> adapter;
+
+    private Date selectedDate;
+
+
+    private SharedPreferences mPrefs;
+    private int mCurViewMode;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+//        selectedDate = new Date(System.currentTimeMillis());
+
+
+        if (sp.contains("selectedDate")) {
+            selectedDate = new Date(sp.getLong("selectedDate", new Date().getTime()));
+        } else {
+            selectedDate = new Date(System.currentTimeMillis());
+        }
+
 
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
         //getSupportActionBar().setIcon(R.drawable.ic_launcher);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Parse.initialize(this, "DCKoMDwof5x093rjDrebXmYKSz6jaUhX8pR7GZwO", "wItuxyAckUKIMTpmbHqYeRIbvLx9Zl25kTrO3GMF");
         ParseAnalytics.trackAppOpened(getIntent());
@@ -66,6 +84,8 @@ public class CalendarActivity extends Activity
             startActivity(intent);
             finish();
         }
+
+
 
     }
 
@@ -88,6 +108,7 @@ public class CalendarActivity extends Activity
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
         listView = (ListView) findViewById(R.id.list_event_title);
 
+
     }
 
     @Override
@@ -97,7 +118,7 @@ public class CalendarActivity extends Activity
         // Mark current day
         robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
 
-        robotoCalendarView.markDayAsSelectedDay(new Date(System.currentTimeMillis()));
+        robotoCalendarView.markDayAsSelectedDay(selectedDate);
 
         setDateStyle();
         getRowInviteUser();
@@ -129,6 +150,11 @@ public class CalendarActivity extends Activity
             return true;
         }
 
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -137,7 +163,25 @@ public class CalendarActivity extends Activity
     public void onDateSelected(Date date) {
 
         robotoCalendarView.markDayAsSelectedDay(date);
+        selectedDate = date;
+//        if (sp.contains("selectedDate")) {
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putLong("selectedDate", selectedDate.getTime());
+        editor.apply();
+        //      } else {
+
+        //    }
         showEvents(date);
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putLong("selectedDate", selectedDate.getTime());
+        editor.apply();
 
     }
 
@@ -148,7 +192,7 @@ public class CalendarActivity extends Activity
         currentDateFormat = Constants.dateFormat.format(date);
 
 
-        adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this, android.R.layout.simple_list_item_1);
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);

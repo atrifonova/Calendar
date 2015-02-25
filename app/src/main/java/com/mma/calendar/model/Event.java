@@ -109,11 +109,11 @@ public class Event extends ParseObject {
         return getDouble(Constants.LATITUDE);
     }
 
-    public List<ParseUser> getInviteUser(){
-        return getList("inviteUsers");
+    public List<ParseUser> getInviteUserList(){
+        return getList("inviteUsersList");
     }
 
-    public void setInviteUser(List<ParseUser> users) {
-        put("inviteUsers", users);
+    public void setInviteUserList(List<ParseUser> users) {
+        put("inviteUsersList", users);
     }
 }

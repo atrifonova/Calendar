@@ -305,7 +305,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
 
                         listOfUser = getParseUsers(txtAddUsers.getText().toString());
 
-                        event.setInviteUser(listOfUser);
+                        event.setInviteUserList(listOfUser);
 
                         event.setLat(lat);
                         event.setLon(lon);
@@ -338,7 +338,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
         ArrayList<ParseUser> list = new ArrayList<ParseUser>();
         ArrayList<String> uNames = new ArrayList<String>();
         for (String name : s.split(",")) {
-            uNames.add(name);
+            uNames.add(name.trim());
         }
 
 

@@ -12,8 +12,8 @@
     <item
         android:id="@+id/action_create_event"
         android:orderInCategory="1"
-        app:showAsAction="always"
-        app:icon="@drawable/icon_add_event"
+        android:showAsAction="always"
+        android:icon="@drawable/icon_add_event"
         android:title="Add Event"/>
 
     <item

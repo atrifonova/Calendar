@@ -5,7 +5,6 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,26 +109,11 @@ public class Event extends ParseObject {
         return getDouble(Constants.LATITUDE);
     }
 
-    public void setInviteUsers(String inviteUsers){
-        put("inviteUsers", inviteUsers);
-        setUsersList(inviteUsers);
-
+    public List<ParseUser> getInviteUser(){
+        return getList("inviteUsers");
     }
 
-    public void setUsersList(String inviteUsers){
-        List<String> arr = new ArrayList<String>();
-        for (String s : inviteUsers.split(",")) {
-            arr.add(s);
-        }
-        put("usersList", arr);
-
-    }
-
-    public String getInviteUser(){
-        return getString("inviteUsers");
-    }
-
-    public List<String> getUsersList() {
-        return getList("usersList");
+    public void setInviteUser(List<ParseUser> users) {
+        put("inviteUsers", users);
     }
 }

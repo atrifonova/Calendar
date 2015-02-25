@@ -61,6 +61,9 @@ public class AddEvent extends Activity implements View.OnClickListener {
     SharedPreferences sharedPreferences = null;
     long getDate;
 
+    private List<ParseUser> listOfUser = new ArrayList<ParseUser>();
+    private List<String> result = new ArrayList<String>();
+
     private String currentDateFormat;
 
 
@@ -88,7 +91,6 @@ public class AddEvent extends Activity implements View.OnClickListener {
     private int endMinutes;
     private int endHour;
 
-    private ArrayList<String> result = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,7 +299,9 @@ public class AddEvent extends Activity implements View.OnClickListener {
                         event.setStartTime(inputStartTime.getText().toString());
                         event.setEndTime(inputEndTime.getText().toString());
                         event.setAddress(txtAddLocation.getText().toString());
-                        event.setInviteUsers(txtAddUsers.getText().toString());
+
+                        event.setInviteUser(listOfUser);
+
                         event.setLat(lat);
                         event.setLon(lon);
                         event.saveEventually();
@@ -369,9 +373,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
     private void showDialog() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(AddEvent.this);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEvent.this, android.R.layout.select_dialog_multichoice);
-
-        result = new ArrayList<String>();
+        final ArrayAdapter<ParseUser> adapter = new ArrayAdapter<ParseUser>(AddEvent.this, android.R.layout.select_dialog_multichoice);
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -380,13 +382,11 @@ public class AddEvent extends Activity implements View.OnClickListener {
                 if (e == null) {
                     for (ParseUser user : users) {
                         if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-                            adapter.add(user.getUsername());
-                            Log.d("userName", user.getUsername());
+                            adapter.add(user);
                         }
                     }
                 } else {
-                    adapter.add("");
-                    Log.d("USER", "NOT FOUND");
+                    Log.d("ERROR", e.getMessage());
                 }
             }
         });
@@ -428,9 +428,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
                 CheckedTextView textView = (CheckedTextView) view;
                 String selectedUser = textView.getText().toString();
                 if (textView.isChecked()) {
-                    result.add(selectedUser);
-//                    result = result + textView.getText() + " ";
-//                    Toast.makeText(AddEvent.this, selectedUser, Toast.LENGTH_LONG).show();
+                    result.add(position, listOfUser.get(position).getUsername());
                 } else {
                     if (result.contains(selectedUser)) {
                         result.remove(selectedUser);

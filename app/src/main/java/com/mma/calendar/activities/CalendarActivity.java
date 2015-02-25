@@ -260,8 +260,27 @@ public class CalendarActivity extends Activity
     //get all row from column invite user without current user
     private void getRowInviteUser () {
 
-        ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        //query.whereNotEqualTo("user", ParseUser.getCurrentUser()); =0
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+        userQuery.whereNotEqualTo("objectId", ParseUser.getCurrentUser().getObjectId().toString());
+        userQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null) {
+                    for (ParseUser user : parseUsers) {
+                        Log.d("USER", user.getUsername());
+                    }
+                } else {
+                    Log.d("ERROR", e.getMessage());
+                }
+            }
+        });
+
+/*        ParseQuery query = new ParseQuery("Event");
+        //query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.whereMatchesQuery("user", userQuery);
+        Log.d("QUERY", ParseUser.getCurrentUser().getObjectId().toString());
+
+        query.whereNotEqualTo("user", ParseUser.getCurrentUser().getObjectId().toString());
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -273,7 +292,7 @@ public class CalendarActivity extends Activity
                     Log.d("TEST", "TEST");
                 }
             }
-        });
+        });*/
     }
 
     private void addNotification(Date date, Event event) {

@@ -307,13 +307,21 @@ public class CalendarActivity extends Activity
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
 //        query.whereNotContainedIn("user",   Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
         //query.whereEqualTo("user", ParseUser.getCurrentUser());
+//
+//        try {
+//            List<Event> events = query.find();
+//            events.size();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
 
-                        if(event.getInviteUserList() != null && event.getInviteUserList().contains(ParseUser.getCurrentUser())){
+                        if (event.getInviteUserList() != null && event.getInviteUserList().contains(ParseUser.getCurrentUser())) {
                             Log.d("", "");
                         }
 

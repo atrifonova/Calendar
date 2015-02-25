@@ -291,7 +291,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
 
                     if (isDateValid) {
                         Event event = new Event();
-                        event.setACL(new ParseACL(ParseUser.getCurrentUser()));
+                        //event.setACL(new ParseACL(ParseUser.getCurrentUser()));
                         event.setUser(ParseUser.getCurrentUser());
                         event.setTitle(inputTitle.getText().toString());
                         event.setDescription(inputDescription.getText().toString());

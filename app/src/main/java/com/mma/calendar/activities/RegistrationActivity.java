@@ -64,6 +64,7 @@ public class RegistrationActivity extends Activity {
         user.setUsername(inputUserName.getText().toString());
         user.setPassword(inputPassword.getText().toString());
         user.setEmail(inputEmail.getText().toString());
+        //user.put("userPhoto", );
         errorField.setText("");
 
         user.signUpInBackground(new SignUpCallback() {

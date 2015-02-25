@@ -300,6 +300,8 @@ public class AddEvent extends Activity implements View.OnClickListener {
                         event.setEndTime(inputEndTime.getText().toString());
                         event.setAddress(txtAddLocation.getText().toString());
 
+
+
                         event.setInviteUser(listOfUser);
 
                         event.setLat(lat);

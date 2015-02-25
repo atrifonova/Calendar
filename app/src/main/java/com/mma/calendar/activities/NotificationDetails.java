@@ -29,7 +29,7 @@ public class NotificationDetails extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_details);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         showDetails();
     }
@@ -69,6 +69,13 @@ public class NotificationDetails extends Activity {
             return true;
         }
 
+
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

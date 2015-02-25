@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.mma.calendar.R;
 import com.mma.calendar.activities.NotificationDetails;
@@ -35,7 +36,9 @@ public class CalendarAlarmService extends Service {
         String title = null;
         String description = null;
         String objectId = null;
-
+        if (newIntent == null) {
+            Log.e("", "Intent is null ? ");
+        }
         Bundle bundle = newIntent.getExtras();
         if (bundle != null) {
             title = bundle.getString(Constants.TITLE);
@@ -58,13 +61,31 @@ public class CalendarAlarmService extends Service {
         Intent intent = new Intent(this.getApplicationContext(), NotificationDetails.class);
         intent.putExtra(Constants.OBJECT_ID, objectId);
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
         Notification notification = new Notification(R.drawable.ic_launcher, title, System.currentTimeMillis());
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingNotificationIntent = PendingIntent.getActivity( this.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification.flags = Notification.FLAG_AUTO_CANCEL;
         notification.setLatestEventInfo(this.getApplicationContext(), title, description, pendingNotificationIntent);
+
+
+        /*
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Notification n = new Notification.Builder(this)
+                .setContentTitle("New mail from " + "test@gmail.com")
+                .setContentText("Subject")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentIntent(pIntent)
+                .setAutoCancel(false)
+                .addAction(R.drawable.ic_launcher, "Snooze", pIntent).build();
+
+
+        mManager.notify(0, n);
+*/
 
         mManager.notify(0, notification);
     }

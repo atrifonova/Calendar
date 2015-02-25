@@ -1,12 +1,11 @@
 package com.mma.calendar.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mma.calendar.R;
 import com.mma.calendar.constants.Constants;
@@ -18,21 +17,29 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
-public class NotificationDetails extends ActionBarActivity {
+public class NotificationDetails extends Activity {
 
-    private ArrayAdapter<String> adapter;
-    private ListView listEventDetails;
+    private TextView txtEventTitle;
+    private TextView txtEventDescription;
+    private TextView txtEventLocation;
+    private TextView txtEventStartDuration;
+    private TextView txtEventEndDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_details);
+
         init();
         showDetails();
     }
 
     private void init() {
-        listEventDetails = (ListView) findViewById(R.id.list_event_notification_details);
+        txtEventTitle = (TextView) findViewById(R.id.txt_event_details_title);
+        txtEventDescription = (TextView) findViewById(R.id.txt_event_details_description);
+        txtEventLocation = (TextView) findViewById(R.id.txt_event_details_location);
+        txtEventStartDuration = (TextView) findViewById(R.id.txt_event_details_start);
+        txtEventEndDuration = (TextView) findViewById(R.id.txt_event_details_end);
     }
 
 
@@ -69,8 +76,6 @@ public class NotificationDetails extends ActionBarActivity {
         Intent intent = getIntent();
         String getEventID = intent.getStringExtra(Constants.OBJECT_ID);
 
-        adapter = new ArrayAdapter<String>(NotificationDetails.this, android.R.layout.simple_expandable_list_item_1);
-
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereEqualTo("objectId", getEventID);
@@ -79,15 +84,35 @@ public class NotificationDetails extends ActionBarActivity {
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
-                        adapter.add(event.getTitle());
+
+                        txtEventTitle.setText(event.getTitle());
+
+                        if (event.getStartDate().equals("") || event.getStartTime().equals("")) {
+                            txtEventStartDuration.setText("");
+                        } else {
+                            txtEventStartDuration.setText(event.getStartDate() + " - " + event.getStartTime());
+                        }
+
+                        if (event.getEndDate().equals("") || event.getEndTime().equals("")) {
+                            txtEventEndDuration.setText("");
+                        } else {
+                            txtEventEndDuration.setText(event.getStartDate() + " - " + event.getStartTime());
+                        }
+
+                        if (event.getDescription().equals("")) {
+                            txtEventDescription.setText("");
+                        } else {
+                            txtEventDescription.setText(event.getDescription());
+                        }
+
+                        if (event.getAddress().equals("")) {
+                            txtEventLocation.setText("");
+                        } else {
+                            txtEventLocation.setText(event.getAddress());
+                        }
                     }
-                } else {
-                    adapter.add("");
                 }
             }
         });
-
-        listEventDetails.setAdapter(adapter);
-
     }
 }

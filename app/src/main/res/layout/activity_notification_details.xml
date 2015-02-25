@@ -1,14 +1,132 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mma.calendar.activities.NotificationDetails">
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/list_event_notification_details"
+    <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Event Title"
+        android:id="@+id/lbl_event_title"
+        android:layout_marginLeft="10dp"/>
 
-    </ListView>
+
+    <TextView
+        android:id="@+id/txt_event_details_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_event_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dip"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_event_details_title"
+        android:background="@drawable/horizontal_line_with_gradient"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/txt_event_details_title"
+        android:text="Starting date of event"
+        android:id="@+id/lbl_event_start_duration"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txt_event_details_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_event_start_duration"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dip"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_event_details_start"
+        android:background="@drawable/horizontal_line_with_gradient"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/txt_event_details_start"
+        android:text="End date of event"
+        android:id="@+id/lbl_event_end_duration"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txt_event_details_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_event_end_duration"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dip"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_event_details_end"
+        android:background="@drawable/horizontal_line_with_gradient"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Event Description"
+        android:layout_marginTop="10dp"
+        android:id="@+id/lbl_event_description"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/txt_event_details_end"/>
+
+    <TextView
+        android:id="@+id/txt_event_details_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_event_description"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dip"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_event_details_description"
+        android:background="@drawable/horizontal_line_with_gradient"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Event Location"
+        android:id="@+id/lbl_event_location"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/txt_event_details_description"/>
+
+    <TextView
+        android:id="@+id/txt_event_details_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_event_location"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dip"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txt_event_details_location"
+        android:background="@drawable/horizontal_line_with_gradient"/>
+
 
 </RelativeLayout>

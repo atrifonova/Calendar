@@ -16,6 +16,7 @@
             android:id="@+id/txt_event_title"
             android:hint="Event Title"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -138,7 +139,7 @@
             android:layout_alignRight="@+id/txt_end_time"
             android:layout_alignEnd="@+id/txt_end_time" />
 
-        <EditText
+        <MultiAutoCompleteTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_add_user"

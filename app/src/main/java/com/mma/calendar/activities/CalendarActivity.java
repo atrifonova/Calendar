@@ -1,13 +1,14 @@
 package com.mma.calendar.activities;
 
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -26,15 +27,13 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 
-public class CalendarActivity extends ActionBarActivity
+public class CalendarActivity extends Activity
         implements RobotoCalendarView.RobotoCalendarListener {
 
     private RobotoCalendarView robotoCalendarView;
@@ -54,25 +53,8 @@ public class CalendarActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
-        getSupportActionBar().setIcon(R.drawable.ic_launcher);
-        // Gets the calendar from the view
-        locale = new Locale("Bulgaria", "BG");
-        robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
-
-        // Set listener, in this case, the same activity
-        robotoCalendarView.setRobotoCalendarListener(this);
-
-        // Initialize the RobotoCalendarPicker with the current index and date
-        currentMonthIndex = 0;
-        currentCalendar = Calendar.getInstance(locale);
-
-        // Mark current day
-        robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
-
-        robotoCalendarView.markDayAsSelectedDay(new Date(System.currentTimeMillis()));
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
         Parse.initialize(this, "DCKoMDwof5x093rjDrebXmYKSz6jaUhX8pR7GZwO", "wItuxyAckUKIMTpmbHqYeRIbvLx9Zl25kTrO3GMF");
         ParseAnalytics.trackAppOpened(getIntent());
@@ -85,12 +67,41 @@ public class CalendarActivity extends ActionBarActivity
             finish();
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        // Gets the calendar from the view
+        locale = new Locale("Bulgaria", "BG");
+        robotoCalendarView = (RobotoCalendarView) findViewById(R.id.robotoCalendarPicker);
+
+        // Set listener, in this case, the same activity
+        robotoCalendarView.setRobotoCalendarListener(this);
+
+        // Initialize the RobotoCalendarPicker with the current index and date
+        currentMonthIndex = 0;
+        currentCalendar = Calendar.getInstance(locale);
+
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
         listView = (ListView) findViewById(R.id.list_event_title);
 
-        setDateStyle();
-        showEvents(new Date(System.currentTimeMillis()));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Mark current day
+        robotoCalendarView.markDayAsCurrentDay(currentCalendar.getTime());
+
+        robotoCalendarView.markDayAsSelectedDay(new Date(System.currentTimeMillis()));
+
+        setDateStyle();
+        getRowInviteUser();
+        showEvents(new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -179,7 +190,7 @@ public class CalendarActivity extends ActionBarActivity
 
     private void setDateStyle() {
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        //query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -207,19 +218,17 @@ public class CalendarActivity extends ActionBarActivity
             }
         });
 
-        findInvitedEvents();
-
     }
 
-    private void findInvitedEvents() {
+/*    private void findInvitedEvents() {
 //        String username = ParseUser.getCurrentUser().getUsername();
         List<String> user = new ArrayList<String>();
-        user.add(ParseUser.getCurrentUser().getUsername());
+        //user.add(ParseUser.getCurrentUser().getUsername());
         user.add("test");
         user.add("atrifonova");
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        query.whereContainedIn("usersList", Arrays.asList(new String[]{"lengarski", "test"}));
+        query.whereContainedIn("usersList", Arrays.asList(new String[]{"atrifonova", "test"}));
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -243,6 +252,25 @@ public class CalendarActivity extends ActionBarActivity
                             e1.printStackTrace();
                         }
                     }
+                }
+            }
+        });
+    }*/
+
+    //get all row from column invite user without current user
+    private void getRowInviteUser () {
+
+        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+        //query.whereNotEqualTo("user", ParseUser.getCurrentUser()); =0
+        query.findInBackground(new FindCallback<Event>() {
+            @Override
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        Log.d("IN", "IN");
+                    }
+                } else {
+                    Log.d("TEST", "TEST");
                 }
             }
         });

@@ -1,8 +1,8 @@
 package com.mma.calendar.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +15,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends Activity {
 
     private EditText inputUserName;
     private EditText inputPassword;

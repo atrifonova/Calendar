@@ -1,16 +1,15 @@
 package com.mma.calendar.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -44,9 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class AddEvent extends ActionBarActivity implements View.OnClickListener {
-
-    private PendingIntent pendingIntent;
+public class AddEvent extends Activity implements View.OnClickListener {
 
     private EditText inputTitle;
     private EditText inputDescription;
@@ -55,7 +53,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
     private TextView inputEndDate;
     private TextView inputStartTime;
     private TextView inputEndTime;
-    private EditText txtAddUsers;
+    private MultiAutoCompleteTextView txtAddUsers;
     private EditText txtAddLocation;
 
     private Button btnCreateEvent;
@@ -103,6 +101,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         sharedPreferences = getSharedPreferences("CURRENT_DATE", Context.MODE_PRIVATE);
 
         init();
+        inputInAddUser();
 
     }
 
@@ -141,7 +140,7 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         btn_add_users = (ImageView) findViewById(R.id.btn_add_user);
         btn_add_users.setOnClickListener(this);
 
-        txtAddUsers = (EditText) findViewById(R.id.txt_add_user);
+        txtAddUsers = (MultiAutoCompleteTextView) findViewById(R.id.txt_add_user);
 
         txtAddLocation = (EditText) findViewById(R.id.txt_add_location);
 
@@ -441,5 +440,32 @@ public class AddEvent extends ActionBarActivity implements View.OnClickListener 
         });
 
         dialog.show();
+    }
+
+    private void inputInAddUser() {
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, com.parse.ParseException e) {
+                if (e == null) {
+                    for (ParseUser user : users) {
+                        if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                            adapter.add(user.getUsername());
+                            Log.d("userName", user.getUsername());
+                        }
+                    }
+                } else {
+                    adapter.add("");
+                    Log.d("USER", "NOT FOUND");
+                }
+            }
+        });
+
+        txtAddUsers.setAdapter(adapter);
+        txtAddUsers.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
     }
 }

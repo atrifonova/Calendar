@@ -58,7 +58,7 @@ public class CalendarAlarmService extends Service {
         Intent intent = new Intent(this.getApplicationContext(), NotificationDetails.class);
         intent.putExtra(Constants.OBJECT_ID, objectId);
 
-        Notification notification = new Notification(R.drawable.ic_launcher, description, System.currentTimeMillis());
+        Notification notification = new Notification(R.drawable.ic_launcher, title, System.currentTimeMillis());
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

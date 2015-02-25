@@ -66,7 +66,6 @@ public class AddEvent extends Activity implements View.OnClickListener {
 
     private String currentDateFormat;
 
-
     private int hour;
     private int minutes;
     private boolean isDateValid;

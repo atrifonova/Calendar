@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.mma.calendar.R;
@@ -24,6 +26,7 @@ public class NotificationDetails extends Activity {
     private TextView txtEventLocation;
     private TextView txtEventStartDuration;
     private TextView txtEventEndDuration;
+    private Button btnShowLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class NotificationDetails extends Activity {
         txtEventLocation = (TextView) findViewById(R.id.txt_event_details_location);
         txtEventStartDuration = (TextView) findViewById(R.id.txt_event_details_start);
         txtEventEndDuration = (TextView) findViewById(R.id.txt_event_details_end);
+        btnShowLocation = (Button) findViewById(R.id.btn_show_map);
     }
 
 
@@ -114,5 +118,9 @@ public class NotificationDetails extends Activity {
                 }
             }
         });
+    }
+
+    public void showMap (final View v) {
+        //add logic
     }
 }

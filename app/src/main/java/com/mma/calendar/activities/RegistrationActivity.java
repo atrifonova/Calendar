@@ -2,6 +2,9 @@ package com.mma.calendar.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,8 +14,13 @@ import android.widget.TextView;
 
 import com.mma.calendar.R;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class RegistrationActivity extends Activity {
 
@@ -21,8 +29,13 @@ public class RegistrationActivity extends Activity {
     private EditText inputEmail;
     private TextView errorField;
 
-    private ImageButton profileImage;
+    private ImageButton inputProfileImage;
 
+    private final int SELECT_PHOTO = 1;
+
+    private Bitmap image;
+    private ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    private byte[] bitmapData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +51,7 @@ public class RegistrationActivity extends Activity {
         inputUserName = (EditText) findViewById(R.id.txt_user_name_registration);
         inputPassword = (EditText) findViewById(R.id.txt_user_password_registration);
         inputEmail = (EditText) findViewById(R.id.txt_email);
+        inputProfileImage = (ImageButton) findViewById(R.id.img_profile);
         errorField = (TextView) findViewById(R.id.txt_error_messages);
 
     }
@@ -55,6 +69,7 @@ public class RegistrationActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void registration(final View v){
         if(inputUserName.getText().length() == 0 || inputPassword.getText().length() == 0 || inputEmail.getText().length() == 0)
             return;
@@ -64,7 +79,16 @@ public class RegistrationActivity extends Activity {
         user.setUsername(inputUserName.getText().toString());
         user.setPassword(inputPassword.getText().toString());
         user.setEmail(inputEmail.getText().toString());
-        //user.put("userPhoto", );
+
+        image = BitmapFactory.decodeResource(RegistrationActivity.this.getResources(), R.drawable.profile_image);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmapData = stream.toByteArray();
+
+        ParseFile imageFile = new ParseFile(bitmapData);
+
+        user.put("userPhoto", imageFile);
+        user.saveInBackground();
+
         errorField.setText("");
 
         user.signUpInBackground(new SignUpCallback() {
@@ -98,5 +122,34 @@ public class RegistrationActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void uploadImage(final View v) {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch (requestCode) {
+
+            case SELECT_PHOTO:
+
+                if (resultCode == RESULT_OK) {
+                    try {
+                        final Uri imageUri = imageReturnedIntent.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                        inputProfileImage.setImageBitmap(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
     }
 }

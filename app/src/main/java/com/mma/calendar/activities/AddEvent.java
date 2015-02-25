@@ -34,7 +34,6 @@ import com.mma.calendar.model.Event;
 import com.mma.calendar.pickers.CustomTimePickerDialog;
 import com.mma.calendar.pickers.MapPicker;
 import com.parse.FindCallback;
-import com.parse.ParseACL;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -291,7 +290,6 @@ public class AddEvent extends Activity implements View.OnClickListener {
 
                     if (isDateValid) {
                         Event event = new Event();
-                        //event.setACL(new ParseACL(ParseUser.getCurrentUser()));
                         event.setUser(ParseUser.getCurrentUser());
                         event.setTitle(inputTitle.getText().toString());
                         event.setDescription(inputDescription.getText().toString());

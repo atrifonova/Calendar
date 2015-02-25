@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mma.calendar.R;
@@ -31,8 +33,11 @@ public class NotificationDetails extends Activity {
     private TextView txtEventStartDuration;
     private TextView txtEventEndDuration;
     private Button btnShowLocation;
+    private ListView list;
 
     private Event eventInfo;
+
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class NotificationDetails extends Activity {
         txtEventLocation = (TextView) findViewById(R.id.txt_event_details_location);
         txtEventStartDuration = (TextView) findViewById(R.id.txt_event_details_start);
         txtEventEndDuration = (TextView) findViewById(R.id.txt_event_details_end);
+        list = (ListView) findViewById(R.id.list_invited_user);
         btnShowLocation = (Button) findViewById(R.id.btn_show_map);
     }
 
@@ -93,8 +99,9 @@ public class NotificationDetails extends Activity {
         Intent intent = getIntent();
         String getEventID = intent.getStringExtra(Constants.OBJECT_ID);
 
+        adapter = new ArrayAdapter<String>(NotificationDetails.this, android.R.layout.simple_list_item_1);
+
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereEqualTo("objectId", getEventID);
         query.findInBackground(new FindCallback<Event>() {
             @Override
@@ -127,10 +134,26 @@ public class NotificationDetails extends Activity {
                         } else {
                             txtEventLocation.setText(event.getAddress());
                         }
+
+                        if (event.getInviteUserList() != null) {
+                            for (int i = 0; i < event.getInviteUserList().size(); i++) {
+                                try {
+                                    event.getInviteUserList().get(i).fetchIfNeeded();
+                                } catch (ParseException e1) {
+                                    e1.printStackTrace();
+                                }
+
+                                adapter.add(event.getInviteUserList().get(i).getUsername());
+                            }
+                        } else {
+                            adapter.add("");
+                        }
                     }
                 }
             }
         });
+
+        list.setAdapter(adapter);
     }
 
     public void showMap (final View v) {

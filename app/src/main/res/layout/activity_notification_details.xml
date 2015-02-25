@@ -145,5 +145,11 @@
         android:layout_below="@+id/btn_show_map"
         android:background="@drawable/horizontal_line_with_gradient"/>
 
+    <ListView
+        android:layout_marginTop="10dp"
+        android:id="@+id/list_invited_user"
+        android:layout_below="@+id/btn_show_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
 
 </RelativeLayout>

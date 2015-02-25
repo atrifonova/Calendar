@@ -1,7 +1,11 @@
 package com.mma.calendar.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +31,8 @@ public class NotificationDetails extends Activity {
     private TextView txtEventStartDuration;
     private TextView txtEventEndDuration;
     private Button btnShowLocation;
+
+    private Event eventInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +101,7 @@ public class NotificationDetails extends Activity {
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
-
+                        eventInfo = event;
                         txtEventTitle.setText(event.getTitle());
 
                         if (event.getStartDate().equals("") || event.getStartTime().equals("")) {
@@ -128,6 +134,26 @@ public class NotificationDetails extends Activity {
     }
 
     public void showMap (final View v) {
-        //add logic
+        if (eventInfo.getAddress().length() > 0) {
+
+            String address = eventInfo.getAddress();
+            double lat = eventInfo.getLat();
+            double lon = eventInfo.getLot();
+
+
+            LocationManager m = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location loc = m.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (loc == null) {
+                loc = m.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+
+            double clat = loc.getLatitude();
+            double clon = loc.getLongitude();
+
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?saddr=" + clat  + "," + clon+ "&daddr=" + lat+ "," + lon ));
+            startActivity(intent);
+
+        }
     }
 }

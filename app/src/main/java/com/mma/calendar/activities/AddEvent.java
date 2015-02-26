@@ -128,7 +128,7 @@ public class AddEvent extends Activity implements View.OnClickListener {
         inputEndDate.setText(currentDateFormat);
 
         inputStartTime = (TextView) findViewById(R.id.txt_start_time);
-        inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(minutes));
+        inputStartTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minutes)));
 
         inputEndTime = (TextView) findViewById(R.id.txt_end_time);
         inputEndTime.setText(new StringBuilder().append(paddingString(hour)).append(":").append(paddingString(minutes)));

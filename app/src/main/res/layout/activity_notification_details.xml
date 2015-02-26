@@ -1,11 +1,7 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
 
     <TextView
         android:layout_marginTop="10dp"
@@ -23,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_event_title"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:textSize="20dip"
         android:textStyle="bold"/>
 
@@ -49,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_event_start_duration"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:textSize="20dip"
         android:textStyle="bold"/>
 
@@ -75,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_event_end_duration"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:textSize="20dip"
         android:textStyle="bold"/>
 
@@ -101,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_event_description"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:textSize="20dip"
         android:textStyle="bold"/>
 
@@ -119,7 +115,6 @@
         android:id="@+id/lbl_event_location"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
         android:layout_below="@+id/txt_event_details_description"/>
 
     <TextView
@@ -154,8 +149,8 @@
         android:id="@+id/list_invited_user"
         android:layout_below="@+id/btn_show_map"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></ListView>
 
-    </RelativeLayout>
-
-</ScrollView>
+</RelativeLayout>

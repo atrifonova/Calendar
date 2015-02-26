@@ -59,7 +59,6 @@ public class CalendarActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
-//        selectedDate = new Date(System.currentTimeMillis());
 
 
         if (sp.contains("selectedDate")) {
@@ -68,9 +67,6 @@ public class CalendarActivity extends Activity
             selectedDate = new Date(System.currentTimeMillis());
         }
 
-
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -84,8 +80,6 @@ public class CalendarActivity extends Activity
             startActivity(intent);
             finish();
         }
-
-
 
     }
 
@@ -164,13 +158,11 @@ public class CalendarActivity extends Activity
 
         robotoCalendarView.markDayAsSelectedDay(date);
         selectedDate = date;
-//        if (sp.contains("selectedDate")) {
+
         SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
         editor.putLong("selectedDate", selectedDate.getTime());
         editor.apply();
-        //      } else {
 
-        //    }
         showEvents(date);
 
     }
@@ -196,7 +188,6 @@ public class CalendarActivity extends Activity
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);
-        query.addDescendingOrder("startDate");
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -234,7 +225,6 @@ public class CalendarActivity extends Activity
 
     private void setDateStyle() {
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        //query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
@@ -264,56 +254,10 @@ public class CalendarActivity extends Activity
 
     }
 
-/*    private void findInvitedEvents() {
-//        String username = ParseUser.getCurrentUser().getUsername();
-        List<String> user = new ArrayList<String>();
-        //user.add(ParseUser.getCurrentUser().getUsername());
-        user.add("test");
-        user.add("atrifonova");
-
-        ParseQuery<Event> query = ParseQuery.getQuery("Event");
-        query.whereContainedIn("usersList", Arrays.asList(new String[]{"atrifonova", "test"}));
-        query.findInBackground(new FindCallback<Event>() {
-            @Override
-            public void done(List<Event> events, ParseException e) {
-                if (e == null) {
-                    for (Event event : events) {
-                        try {
-                            Date date = Constants.dateFormat.parse(event.getStartDate());
-                            String startTime = event.getStartTime();
-                            int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
-                            int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
-                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.GREEN_CIRCLE, date);
-                            date.setHours(hour);
-                            date.setMinutes(minutes);
-                            Date now = new Date();
-                            long nowTime = now.getTime();
-                            long eventTime = date.getTime();
-                            if (nowTime < eventTime) {
-                                addNotification(date, event);
-                            }
-                        } catch (java.text.ParseException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-    }*/
-
     //get all row from column invite user without current user
     private void getRowInviteUser () {
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
-//        query.whereNotContainedIn("user",   Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
-        //query.whereEqualTo("user", ParseUser.getCurrentUser());
-//
-//        try {
-//            List<Event> events = query.find();
-//            events.size();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
 
         query.findInBackground(new FindCallback<Event>() {
             @Override
@@ -324,27 +268,6 @@ public class CalendarActivity extends Activity
                         if (event.getInviteUserList() != null && event.getInviteUserList().contains(ParseUser.getCurrentUser())) {
                             Log.d("", "");
                         }
-
-//                        if(event.getInviteUserList().contains(ParseUser.getCurrentUser())){
-//                           Log.d("", "");
-//                        }
-                        //                       try {
-//                            Date date = Constants.dateFormat.parse(event.getStartDate());
-//                            String startTime = event.getStartTime();
-//                            int hour = Integer.parseInt(startTime.substring(0, startTime.indexOf(":")));
-//                            int minutes = Integer.parseInt(startTime.substring(startTime.indexOf(":") + 1));
-//                            robotoCalendarView.markDayWithStyle(RobotoCalendarView.BLUE_CIRCLE, date);
-//                            date.setHours(hour);
-//                            date.setMinutes(minutes);
-//                            Date now = new Date();
-//                            long nowTime = now.getTime();
-//                            long eventTime = date.getTime();
-//                            if (nowTime < eventTime) {
-//                                addNotification(date, event);
-//                            }
-                        //                       } catch (java.text.ParseException e1) {
-                        //                          e1.printStackTrace();
-                        //                     }
                     }
                 }
             }

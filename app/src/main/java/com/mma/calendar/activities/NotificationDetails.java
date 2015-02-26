@@ -23,10 +23,7 @@ import com.mma.calendar.R;
 import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
 import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -51,10 +48,6 @@ public class NotificationDetails extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_details);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Parse.initialize(this, "DCKoMDwof5x093rjDrebXmYKSz6jaUhX8pR7GZwO", "wItuxyAckUKIMTpmbHqYeRIbvLx9Zl25kTrO3GMF");
-        ParseAnalytics.trackAppOpened(getIntent());
-        ParseObject.registerSubclass(Event.class);
 
         init();
         showDetails();

@@ -226,6 +226,7 @@ public class CalendarActivity extends Activity
 
     private void setDateStyle() {
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {

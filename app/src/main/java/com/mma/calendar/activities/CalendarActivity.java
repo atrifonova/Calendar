@@ -2,8 +2,6 @@ package com.mma.calendar.activities;
 
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import com.disegnator.robotocalendar.RobotoCalendarView;
 import com.mma.calendar.R;
 import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
-import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
@@ -243,9 +240,9 @@ public class CalendarActivity extends Activity
                             Date now = new Date();
                             long nowTime = now.getTime();
                             long eventTime = date.getTime();
-                            if (nowTime < eventTime) {
+/*                            if (nowTime < eventTime) {
                                 addNotification(date, event);
-                            }
+                            }*/
                         } catch (java.text.ParseException e1) {
                             e1.printStackTrace();
                         }
@@ -276,20 +273,5 @@ public class CalendarActivity extends Activity
         });
 
 
-    }
-
-    private void addNotification(Date date, Event event) {
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
-        long when = date.getTime();
-        Intent intent = new Intent(this, CalendarReceiver.class);
-        String title = event.getTitle();
-        String description = event.getDescription();
-        String objectID = event.getObjectId();
-
-        intent.putExtra(Constants.TITLE, title);
-        intent.putExtra(Constants.DESCRIPTION, description);
-        intent.putExtra(Constants.OBJECT_ID, objectID);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
     }
 }

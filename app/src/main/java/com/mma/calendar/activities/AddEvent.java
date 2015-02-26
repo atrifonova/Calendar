@@ -1,9 +1,11 @@
 package com.mma.calendar.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +35,7 @@ import com.mma.calendar.constants.Constants;
 import com.mma.calendar.model.Event;
 import com.mma.calendar.pickers.CustomTimePickerDialog;
 import com.mma.calendar.pickers.MapPicker;
+import com.mma.calendar.services.CalendarReceiver;
 import com.parse.FindCallback;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -306,7 +309,10 @@ public class AddEvent extends Activity implements View.OnClickListener {
 
                         event.setLat(lat);
                         event.setLon(lon);
+
                         event.saveEventually();
+
+                        addNotification(startDate, event);
 
 
                         Intent intent = new Intent(AddEvent.this, CalendarActivity.class);
@@ -489,5 +495,27 @@ public class AddEvent extends Activity implements View.OnClickListener {
         txtAddUsers.setAdapter(adapter);
         txtAddUsers.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
+    }
+
+    private void addNotification(Date date, Event event) {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        long when = date.getTime();
+        Intent intent = new Intent(this, CalendarReceiver.class);
+        String title = event.getTitle();
+        String description = "";
+
+        if (event.getDescription().equals("")) {
+            description = "";
+        } else {
+            description = event.getDescription();
+        }
+
+        String objectID = event.getObjectId();
+
+        intent.putExtra(Constants.TITLE, title);
+        intent.putExtra(Constants.DESCRIPTION, description);
+        intent.putExtra(Constants.OBJECT_ID, objectID);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pendingIntent);
     }
 }

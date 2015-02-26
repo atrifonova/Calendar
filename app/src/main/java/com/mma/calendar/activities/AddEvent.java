@@ -310,7 +310,11 @@ public class AddEvent extends Activity implements View.OnClickListener {
                         event.setLat(lat);
                         event.setLon(lon);
 
-                        event.saveEventually();
+                        try {
+                            event.save();
+                        } catch (com.parse.ParseException e) {
+                            e.printStackTrace();
+                        }
 
                         addNotification(startDate, event);
 

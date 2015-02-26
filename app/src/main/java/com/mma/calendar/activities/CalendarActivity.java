@@ -188,12 +188,13 @@ public class CalendarActivity extends Activity
 
         ParseQuery<Event> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("startDate", currentDateFormat);
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<Event>() {
             @Override
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
-                        adapter.add(event.getStartTime() + " - " + event.getEndTime() + " " + event.getTitle());
+                        adapter.add(event.getStartTime() + " - " + event.getEndTime() + " ( " + event.getEndDate() + " ) " + event.getTitle());
                     }
                 } else {
                     adapter.add("");
